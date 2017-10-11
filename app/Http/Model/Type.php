@@ -16,4 +16,5 @@ class Type extends Model
     protected $guarded = [];
     //是否维护时间字段  维护汇报Unknown column 'updated_at'
     public $timestamps = false;
+
 }

@@ -1,6 +1,6 @@
 @extends('layouts.admin_two')
 
-@section('content')
+@section('content') 
 <body>
     <!--面包屑导航 开始-->
     <div class="crumb_warp">
@@ -52,6 +52,17 @@
                             <!-- <span><i class="fa fa-exclamation-circle yellow"></i>这里是默认长度</span> -->
                         </td>
                     </tr>
+                    <tr>
+                        <th>店铺类型：</th>
+                            <td>
+                                <select style="width:150px;" name="shop_type" id="catid" class="required">
+                                <option value="">所有分类</option>
+                                @foreach($type as $v)    
+                                    <option value="{{ $v->type_id }}">　｜－－{{ $v->type_name }}</option>
+                                @endforeach  
+                                </select>
+                            </td>
+                    </tr>
                      <tr>
                         <th>店铺地址：</th>
                         <td>
@@ -74,96 +85,33 @@
                         </td>
                     </tr>
 
-                    <tr>
-                        <th><i class="require">*</i>店铺logo：</th>
-<!-- 第一部分 -->
+        <tr>
+        <th><i class="require">*</i>店铺logo：</th>
+        <td>     
+         <input type="hidden" size="50" name="shop_logo_url" id="shop_logo"> 
+       
+            <input id="file_upload_logo" name="shop_logo" type="file" multiple="true">
+            <p><img id="img_logo" alt="上传后显示图片"  style="max-width:350px;max-height:100px;" /></p>
+        </td>
+        </tr>
 
- <!--  前端部分图片刹车带吗代码 -->
-<!-- <form id="art_form" action="{{url('admin/pic')}}" method="post" enctype="multipart/form-data">
-{{--csrf_field()--}}
+<tr>
+    <th><i class="require">*</i>营业执照：</th>
+    <td>    
+    <input type="hidden" size="50" name="shop_zhizhao_url" id="shop_zhizhao">  
+    <input id="file_upload_zhizhao" name="shop_zhizhao" type="file"  value=''multiple="true">
+    <p><img id="img_zhizhao" alt="上传后显示图片"  style="max-width:350px;max-height:100px;" /></p>
+</td>
+</tr>                       
 
-<input type="text" size="50" name="art_thumb" id="art_thumb"> 
-<input id="file_upload" name="file_upload" type="file" multiple="true">
-<p><img id="img1" alt="上传后显示图片" style="max-width:350px;max-height:100px;" /></p>
-
-<input type="submit" value="提交">
-</form> -->                     
-
-<!-- 第二部分 js代码-->
-
-<!-- 
-<script type="text/javascript">
-        $(function () {
-            $("#file_upload").change(function () {
-                uploadImage();
-            })
-        })
-        function uploadImage() {
-//  判断是否有选择上传文件
-            var imgPath = $("#file_upload").val();
-            if (imgPath == "") {
-                alert("请选择上传图片！");
-                return;
-            }
-            //判断上传文件的后缀名
-            var strExtension = imgPath.substr(imgPath.lastIndexOf('.') + 1);
-            if (strExtension != 'jpg' && strExtension != 'gif'
-                && strExtension != 'png' && strExtension != 'bmp') {
-                alert("请选择图片文件");
-                return;
-            }
-            var formData = new FormData($('#art_form')[0]);
-            $.ajax({
-                type: "POST",
-                url: "/admin/upload",
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(data) {
-                    $('#img1').attr('src','http://lamp189.oss-cn-shanghai.aliyuncs.com/'+data);
-                    $('#art_thumb').val(data);
-                },
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert("上传失败，请检查网络后重试");
-                }
-            });
-        }
-    </script>
- -->
-
-
+<tr>
+    <th><i class="require">*</i>经营许可证：</th>
 <td>      
-   <!--  <input type="text" size="50" name="art_thumb" id="art_thumb"> -->
-    <input id="file_upload" name="shop_logo" type="file" multiple="true">
-    <p><img id="img1" alt="上传后显示图片"  style="max-width:350px;max-height:100px;" /></p>
+    <input type="hidden" size="50" name="shop_licence_url" id="shop_licence">  
+    <input id="file_upload_licence" name="shop_licence" type="file" multiple="true">
+    <p><img id="img_licence" alt="上传后显示图片"  style="max-width:350px;max-height:100px;" /></p>
 </td>
-
-
-                    </tr>
-
-                   
-                       
-                     <tr>
-                        <th><i class="require">*</i>营业执照：</th>
-                        <td>      
-   <!--  <input type="text" size="50" name="art_thumb" id="art_thumb"> -->
-    <input id="file_upload" name="shop_zhizhao" type="file" multiple="true">
-    <p><img id="img1" alt="上传后显示图片"  style="max-width:350px;max-height:100px;" /></p>
-</td>
-                       <!--  <td><input type="file" name="shop_zhizhao"></td>
-                    </tr> -->
-
-
-                    <tr>
-                        <th><i class="require">*</i>经营许可证：</th>
-<td>      
-   <!--  <input type="text" size="50" name="art_thumb" id="art_thumb"> -->
-    <input id="file_upload" name="shop_licence" type="file" multiple="true">
-    <p><img id="img1" alt="上传后显示图片"  style="max-width:350px;max-height:100px;" /></p>
-</td>
-
-                        <!-- <td><input type="file" name="shop_licence"></td> -->
-                    </tr>
+</tr>
                     <tr>
                         <th>店铺状态：</th>
                         <td>
@@ -174,21 +122,7 @@
                         </td>
                     </tr>
                    
-                    <!-- <tr>
-                        <th>复选框：</th>
-                        <td>
-                            <label for=""><input type="checkbox" name="">复选框一</label>
-                            <label for=""><input type="checkbox" name="">复选框二</label>
-                        </td>
-                    </tr> -->
-                  
-                    <!-- <tr>
-                        <th>详细内容：</th>
-                        <td>
-                            <textarea class="lg" name="content"></textarea>
-                            <p>标题可以写30个字</p>
-                        </td>
-                    </tr> -->
+                   
                     <tr>
                         <th></th>
                         <td>
@@ -205,15 +139,25 @@
 <script type="text/javascript">
 
     $(function () {
-        $("#file_upload").change(function () {
-            uploadImage();
+        $("#file_upload_logo").change(function () {
+            uploadImage_logo();
+        })
+    })
+    $(function () {
+        $("#file_upload_zhizhao").change(function () {
+            uploadImage_zhizhao();
+        })
+    })
+    $(function () {
+        $("#file_upload_licence").change(function () {
+            uploadImage_licence();
         })
     })
 
-    function uploadImage() {
-    //  判断是否有选择上传文件
 
-        var imgPath = $("#file_upload").val();
+    function uploadImage_logo() {
+    //  判断是否有选择上传文件
+        var imgPath = $("#file_upload_logo").val();
         // alert(imgPath)
         if (imgPath == "") {
             alert("请选择上传图片！");
@@ -225,26 +169,101 @@
             alert("请选择图片文件");
             return;
         }
-    // new FormData对象    
+    // new FormData对象    art_form form表单的id名
         var formData = new FormData($('#art_form')[0]);
         // alert(formData)
             $.ajax({
                 type: "POST",
                 //ajax对应路由 再对应控制器方法
-                url: "/admin/upload",
+                url: "/admin/uploadLogo",
                 data: formData,
                 contentType: false,
                 processData: false,
                 success: function(data) {
-                   
-                    $('#img1').attr('src','/'+data);
-                    // $('#art_thumb').val(data);
+                    //显示图片
+                    $('#img_logo').attr('src','/'+data);
+                    // id='shop_logo' 的隐藏域的值 用隐藏域
+                    // $('#art_thumb_logo').val(data);
+                    $('#shop_logo').val(data);
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     alert("上传失败，请检查网络后重试");
                 }
             });
         }
+
+        // 执照上传
+        function uploadImage_zhizhao() {
+    //  判断是否有选择上传文件
+        var imgPath = $("#file_upload_zhizhao").val();
+        // alert(imgPath)
+        if (imgPath == "") {
+            alert("请选择上传图片！");
+            return;
+        }
+    //判断上传文件的后缀名
+        var strExtension = imgPath.substr(imgPath.lastIndexOf('.') + 1);
+        if (strExtension != 'jpg' && strExtension != 'gif' && strExtension != 'png' && strExtension != 'bmp') {
+            alert("请选择图片文件");
+            return;
+        }
+    // new FormData对象    art_form form表单的id名
+        var formData = new FormData($('#art_form')[0]);
+        // alert(formData)
+            $.ajax({
+                type: "POST",
+                //ajax对应路由 再对应控制器方法
+                url: "/admin/uploadZhizhao",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    //显示图片
+                    $('#img_zhizhao').attr('src','/'+data);
+                    $('#shop_zhizhao').val(data);
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert("上传失败，请检查网络后重试");
+                }
+            });
+        }
+
+        // 许可证
+         function uploadImage_licence() {
+    //  判断是否有选择上传文件
+        var imgPath = $("#file_upload_licence").val();
+        // alert(imgPath)
+        if (imgPath == "") {
+            alert("请选择上传图片！");
+            return;
+        }
+    //判断上传文件的后缀名
+        var strExtension = imgPath.substr(imgPath.lastIndexOf('.') + 1);
+        if (strExtension != 'jpg' && strExtension != 'gif' && strExtension != 'png' && strExtension != 'bmp') {
+            alert("请选择图片文件");
+            return;
+        }
+    // new FormData对象    art_form form表单的id名
+        var formData = new FormData($('#art_form')[0]);
+        // alert(formData)
+            $.ajax({
+                type: "POST",
+                //ajax对应路由 再对应控制器方法
+                url: "/admin/uploadLicence",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    //显示图片
+                    $('#img_licence').attr('src','/'+data);
+                    $('#shop_licence').val(data);
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert("上传失败，请检查网络后重试");
+                }
+            });
+        }
+
     </script>
 
 </body>

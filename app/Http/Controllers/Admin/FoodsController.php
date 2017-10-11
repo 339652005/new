@@ -7,9 +7,11 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 // 添加使用的命名空间
-use App\Foods;
+// use App\Foods;
+use App\Http\Model\Foods;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Input;
+use DB;
 class FoodsController extends Controller
 {
     /**
@@ -19,9 +21,35 @@ class FoodsController extends Controller
      */
     public function index(Request $request)
     {
-         $input = $request->input('keywords')?$request->input('keywords'):'';
-        $foods = foods::orderBy('foods_id','asc')->where('foods_name','like','%'.$input.'%')->paginate(10);
-        return view('admin.foods.list',compact('foods','input'));
+
+
+ //一旦关联被定义之后，则可以通过 cate「动态属性」来获取 Article 的 Cate 模型：
+
+
+/* 处理食品和类名关系*/
+        // 食品id => type_id => type_name
+         $foods = Foods::get();  //所有食品
+
+        // //声明一个空数组，
+         $arrType = array();
+        // // 遍历每一个食品
+         foreach ($foods as $food){
+           
+       //dd($food->taocan->taocan_name);  //浪漫鲜花 
+        // dd($food->foods_id);     //单个商品的id
+        // // 食品的id => 食品的类名
+        $arrType[$food->foods_id] =  $food->taocan->taocan_name;
+         }
+         //dd($arrType);
+        
+
+
+         
+
+
+        $input = $request->input('keywords')?$request->input('keywords'):'';
+        $foods = Foods::orderBy('foods_id','asc')->where('foods_name','like','%'.$input.'%')->paginate(10);
+        return view('admin.foods.list',compact('foods','input','types','arrType'));
     }
 
     /**
@@ -31,7 +59,11 @@ class FoodsController extends Controller
      */
     public function create()
     {
-        return view('admin.foods.add');
+        // return 'test';
+      $taocan =  DB::table('dc_taocan')->get();
+     
+      //dd($type);
+        return view('admin.foods.add',compact('taocan'));
     }
 
     /**
@@ -43,6 +75,7 @@ class FoodsController extends Controller
     public function store(Request $request)
     {
           $input = $request->except('_token');
+           // dd( $input);
            $foods = new foods();
            $foods->foods_name = $input['foods_name'];
            $foods->foods_sales = $input['foods_sales'];
@@ -50,7 +83,7 @@ class FoodsController extends Controller
            $foods->foods_desc = $input['foods_desc'];
            $foods->foods_status = $input['foods_status'];
            $foods->foods_piture = $input['foods_piture'];
-           // dd();
+          
            $re = $foods->save();
         if($re){
              //return '成功';
@@ -143,5 +176,22 @@ class FoodsController extends Controller
             ];
         }
         return  $data;
+    }
+    // 上传图片
+    public function uploadLogo()
+    {
+    //获取上传的文件对象
+    $file = Input::file('shop_logo');
+      //判断文件是否有效
+     //return $file;
+      if($file->isValid()){
+        $entension = $file->getClientOriginalExtension();//上传文件的后缀名
+        $newName = 'logo_'.date('YmdHis').mt_rand(1000,9999).'.'.$entension;
+        // 移动文件
+        $path = $file->move(public_path().'\uploads',$newName);
+        $filepath = 'uploads/'.$newName;
+        //返回文件的路径
+        return $filepath;
+      }
     }
 }

@@ -12,12 +12,12 @@
     <script type="text/javascript" src="{{ asset('admin/js/jquery-1.8.3.min.js')}}"></script>
 </head>
 
-<!-- // <style type="text/css">
-// 斜边栏的展开
-//     .menu_box ul li ul.sub_menu{
-//     	display:block;
-//     }
-// </style> -->
+<style>
+/*  修正模板2 的 分页样式 */
+    .result_content ul li span{
+         padding:6px 12px;
+    }
+    </style>
 
 @section('content')
 

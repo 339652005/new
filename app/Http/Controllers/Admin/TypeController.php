@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 // 添加使用的命名空间
-use App\Type;
+// use App\Type;
+use App\Http\Model\Type;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Input;
 class TypeController extends Controller
@@ -133,6 +134,7 @@ class TypeController extends Controller
                 'msg'=>'删除失败'
             ];
         }
-        return  $data;
+        return  $data;    //return回去的数据ajax接收
+
     }
 }

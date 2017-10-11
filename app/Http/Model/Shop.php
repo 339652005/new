@@ -16,4 +16,9 @@ class Shop extends Model
     protected $guarded = [];
     //是否维护时间字段  维护汇报Unknown column 'updated_at'
     public $timestamps = false;
+
+     public function type()
+    {
+      return $this->belongsTo('App\Http\Model\type', 'type_id', 'type_id');
+    }
 }

@@ -84,9 +84,9 @@
         <th width="30">店铺执照</th>
         
         <th width="30">经营许可证</th>
-        <th width="50">店铺描述</th>
+        <th width="30">店铺描述</th>
         <th width="30">店铺状态</th>
-        <th width="40">操作</th>
+        <th width="50">操作</th>
       </tr>
     </thead>
     <tbody>
@@ -96,16 +96,20 @@
  @foreach($shop as $k=>$v)
       <tr class="text-c">
     
-        <td>{{$v->shop_id}}</td>
+        <td>{{$v->shop_id}} 111</td>
        
         <td><u style="cursor:pointer" class="text-primary" onclick="user_show('10001','360','','张三','user-show.html')">{{$v->shop_name}}</u>
         </td>
-        <td>{{--$v->type_id--}} 待联查店铺类型</td>
+        
+       
+        <td> {{ $arrType[$v->type_id] }} </td>
+       
+       
         <td>{{$v->shop_addr}}</td>
         <td>{{$v->shop_x}},{{$v->shop_y}}</td>
-        <td>{{$v->shop_logo}}</td>
-                        <td>{{$v->shop_zhizhao}}</td>
-                        <td>{{$v->shop_licence}}</td>
+        <td><img style="width:100px;height:120px;" src="\{{$v->shop_zhizhao}}" alt=""></td>
+                        <td><img style="width:100px;height:120px;" src="\{{$v->shop_zhizhao}}" alt=""></td>
+                        <td><img style="width:100px;height:120px;" src="\{{$v->shop_licence}}" alt=""></td>
                         <td>{{$v->shop_desc}}</td>
                        
         
@@ -115,7 +119,6 @@
         
         <td class="f-14 user-manage">
 
-        <!-- <a style="text-decoration:none" onClick="user_stop(this,'10001')" href="javascript:;" title="停用"><i class="icon-hand-down"></i>停用</a> -->
 
          <a title="编辑" href="{{url('admin/shop/'.$v->shop_id.'/edit')}}" onclick="user_edit('4','550','','编辑','user-add.html')" class="ml-5" style="text-decoration:none"><span class="label label-success">编辑</span><i class="icon-edit"></i></a> 
          <!-- <a style="text-decoration:none" class="ml-5" onClick="user_password_edit('10001','370','228','修改密码','user-password-edit.html')" href="javascript:;" title="修改密码"><i class="icon-key"></i>修改密码</a> -->

@@ -41,12 +41,34 @@ Route::resource('admin/user','Admin\UserController');
 // 5.店铺管理
 Route::resource('admin/shop','Admin\ShopController');
 //ajax上传文件
-Route::post('admin/upload','Admin\ShopController@upload');
+Route::post('admin/uploadLogo','Admin\ShopController@uploadLogo');
+Route::post('admin/uploadZhizhao','Admin\ShopController@uploadZhizhao');
+Route::post('admin/uploadLicence','Admin\ShopController@uploadLicence');
+// 修改信息与上传图片矛盾的解决
+Route::post('admin/shop/{id}','Admin\ShopController@update');
 // 7.店铺分类
 Route::resource('admin/type','Admin\TypeController');
 // 8.商品管理
 Route::resource('admin/foods','Admin\FoodsController');
+Route::post('admin/foods/upload','Admin\FoodsController@uploadLogo');
+// 矛盾的解决
+Route::post('admin/foods/{id}','Admin\FoodsController@update');
+
 // 6.套餐管理
 Route::resource('admin/taocan','Admin\TaocanController');
 
-// Route::post('admin/upload')
+// 权限管理
+	  //  角色路由
+    Route::resource('admin/role','admin\RoleController');
+    Route::get('admin/role/auth/{id}','admin\RoleController@auth');
+    Route::post('admin/role/doauth','admin\RoleController@doAuth');
+
+       //  权限路由
+    Route::resource('admin/permission','admin\PermissionController');
+  	   // 用户页面的 授权按钮 路由
+    Route::get('admin/user/auth/{id}','admin\UserController@auth');
+    Route::post('admin/user/doauth','admin\UserController@doAuth');
+    //如果没有权限，给一个没有权限的提示页面
+	Route::get('admin/nopermission',function(){
+	    return view('errors.permission');
+	});

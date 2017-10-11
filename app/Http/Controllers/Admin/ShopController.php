@@ -13,7 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Model\Shop;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Input;
-
+use DB;
 class ShopController extends Controller
 {
     /**
@@ -23,11 +23,15 @@ class ShopController extends Controller
      */
     public function index(Request $request)
     {
-        //return 'test';
-
+      // echo "<pre/>";
+        $type =  DB::table('dc_type')->get();
+        foreach ($type as $key => $value) { 
+            $arrType[$value->type_id] = $value->type_name;
+        }
+        // dd( $arrType);
         $input = $request->input('keywords')?$request->input('keywords'):'';
         $shop = Shop::orderBy('shop_id','asc')->where('shop_name','like','%'.$input.'%')->paginate(10);
-        return view('admin.shop.list',compact('shop','input'));
+        return view('admin.shop.list',compact('shop','input','arrType'));
     }
 
     /**
@@ -37,8 +41,11 @@ class ShopController extends Controller
      */
     public function create()
     {
-        // return 'test';
-        return view('admin.shop.add');
+      // return 'test';
+      $type =  DB::table('dc_type')->get();
+     
+      //dd($type);
+      return view('admin.shop.add',compact('type'));
     }
 
     /**
@@ -52,7 +59,7 @@ class ShopController extends Controller
         
 //        1 接受前台用户传过来的数据
           $input = $request->except('_token');
-           // dd($input);
+         // dd($input);
 //        2 执行数据库添加操作（向user表添加一条记录）
 // 第一种添加方式创建一个空模型给模型的属性赋值然后执行save方法）
            $shop = new Shop();
@@ -61,11 +68,12 @@ class ShopController extends Controller
            $shop->shop_x = $input['shop_x'];
            $shop->shop_y = $input['shop_y'];
            $shop->shop_desc = $input['shop_desc'];
+           $shop->type_id = $input['shop_type'];
            $shop->shop_status = $input['shop_status'];
-           $shop->shop_logo = $input['shop_logo'];
-           $shop->shop_licence = $input['shop_licence'];
-           $shop->shop_zhizhao = $input['shop_zhizhao'];
-           
+           $shop->shop_logo = $input['shop_logo_url'];
+           $shop->shop_licence = $input['shop_licence_url'];
+           $shop->shop_zhizhao = $input['shop_zhizhao_url'];
+            // dd($shop);
            $re = $shop->save();
            
 // dd($input);
@@ -99,9 +107,10 @@ class ShopController extends Controller
      */
     public function edit($id)
     {
+      $type =  DB::table('dc_type')->get();
         //获取到要修改的那条记录
         $shop = Shop::find($id);
-        return view('admin.shop.edit',compact('shop'));
+        return view('admin.shop.edit',compact('shop','type'));
     }
 
     /**
@@ -113,6 +122,7 @@ class ShopController extends Controller
      */
     public function update(Request $request, $id)
     {
+      // dd($id);
 //        1 接收要修改的记录的内容和id
           // $input  = $request->input('shop_name');
            $input = $request->except('_token','_method');
@@ -124,19 +134,23 @@ class ShopController extends Controller
            $shop->shop_x = $input['shop_x'];
            $shop->shop_y = $input['shop_y'];
            $shop->shop_desc = $input['shop_desc'];
+           $shop->type_id = $input['shop_type'];
            $shop->shop_status = $input['shop_status'];
-           $shop->shop_logo = $input['shop_logo'];
-           $shop->shop_licence = $input['shop_licence'];
-           $shop->shop_zhizhao = $input['shop_zhizhao'];
-
+           // $shop->shop_logo = $input['shop_logo'];
+           // $shop->shop_licence = $input['shop_licence'];
+           // $shop->shop_zhizhao = $input['shop_zhizhao'];
+            $shop->shop_logo = $input['shop_logo_url'];
+           $shop->shop_licence = $input['shop_licence_url'];
+           $shop->shop_zhizhao = $input['shop_zhizhao_url'];
+// dd($input);
           // $shop->shop_name = $input;
            $re = $shop->save();   //save()保存数据
 //        3 判断执行是否成功
         if($re){
-            // return '成功';
+            
             return redirect('admin/shop');   //列表页
         }else{
-            // return '失败';
+            
             return redirect('admin/shop/'.$id.'/edit')->with('msg','店铺修改失败');  //返回错误信息
         }
     }
@@ -168,24 +182,52 @@ class ShopController extends Controller
     }
 
 
-    public function upload()
+    public function uploadLogo()
     {
     //获取上传的文件对象
     $file = Input::file('shop_logo');
-    $file = Input::file('shop_logo');
-    $file = Input::file('shop_logo');
-       // dd($file);
       //判断文件是否有效
-    // return $file;
+     //return $file;
       if($file->isValid()){
         $entension = $file->getClientOriginalExtension();//上传文件的后缀名
-        $newName = date('YmdHis').mt_rand(1000,9999).'.'.$entension;
+        $newName = 'logo_'.date('YmdHis').mt_rand(1000,9999).'.'.$entension;
         // 移动文件
         $path = $file->move(public_path().'\uploads',$newName);
         $filepath = 'uploads/'.$newName;
         //返回文件的路径
         return $filepath;
-
       }
     }
+
+    public function uploadZhizhao()
+    {
+    $file = Input::file('shop_zhizhao');
+    
+      if($file->isValid()){
+        $entension = $file->getClientOriginalExtension();//上传文件的后缀名
+        $newName = 'zhizhao_'.date('YmdHis').mt_rand(1000,9999).'.'.$entension;
+        // 移动文件
+        $path = $file->move(public_path().'\uploads',$newName);
+        $filepath = 'uploads/'.$newName;
+        //返回文件的路径
+        return $filepath;
+      }
+    }
+
+    public function uploadLicence()
+    {
+    $file = Input::file('shop_licence');
+    
+      if($file->isValid()){
+        $entension = $file->getClientOriginalExtension();//上传文件的后缀名
+        $newName = 'licence_'.date('YmdHis').mt_rand(1000,9999).'.'.$entension;
+        // 移动文件
+        $path = $file->move(public_path().'\uploads',$newName);
+        $filepath = 'uploads/'.$newName;
+        //返回文件的路径
+        return $filepath;
+      }
+    }
+    
+
 }

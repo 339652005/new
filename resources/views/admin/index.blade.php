@@ -112,7 +112,28 @@ data-title="添加管理员"    //标题
 			</ul>
 		</dd>
 	</dl>
+	<!-- 权限的管理以及角色的管理 -->
+	<dl id="menu-member">
+			<dt><i class="Hui-iconfont">&#xe60d;</i> 角色管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li><a data-href="{{url('admin/role/create')}}" data-title="添加角色" href="javascript:;">添加角色</a></li>
+					<li><a data-href="{{url('admin/role')}}" data-title="角色列表" href="javascript:;">角色列表</a></li>
+			</ul>
+		</dd>
+	</dl>
+	<dl id="menu-member">
+			<dt><i class="Hui-iconfont">&#xe60d;</i> 权限管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li><a data-href="{{url('admin/permission/create')}}" data-title="添加权限" href="javascript:;">添加权限</a></li>
+					<li><a data-href="{{url('admin/permission')}}" data-title="权限列表" href="javascript:;">权限列表</a></li>
 
+			</ul>
+		</dd>
+	</dl>
+
+	
 	<!-- 待补充 -->
 		<dl id="menu-admin">
 			<dt><i class="Hui-iconfont">&#xe62d;</i> 购物车管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
