@@ -46,7 +46,7 @@ class LoginController extends Controller
     public function login()
     {
         // return app_path();   //测试
-        return view('admin.login');  
+        return view('admin.adminlogin.login');  
     }
     
     public function dologin(Request $request)
@@ -152,14 +152,14 @@ class LoginController extends Controller
     }
     public function index( )
     {
-        return view('admin.index');
+        return view('admin.adminlogin.index');
 
     }
 
     public function welcome()
     {
        //dd($_SERVER);
-        return view('admin.welcome');
+        return view('admin.adminlogin.welcome');
     }
 
     public function quit()

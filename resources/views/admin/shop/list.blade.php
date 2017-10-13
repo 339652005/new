@@ -107,7 +107,7 @@
        
         <td>{{$v->shop_addr}}</td>
         <td>{{$v->shop_x}},{{$v->shop_y}}</td>
-        <td><img style="width:100px;height:120px;" src="\{{$v->shop_zhizhao}}" alt=""></td>
+        <td><img style="width:100px;height:120px;" src="\{{$v->shop_logo}}" alt=""></td>
                         <td><img style="width:100px;height:120px;" src="\{{$v->shop_zhizhao}}" alt=""></td>
                         <td><img style="width:100px;height:120px;" src="\{{$v->shop_licence}}" alt=""></td>
                         <td>{{$v->shop_desc}}</td>
@@ -212,6 +212,7 @@
   <!-- 修改后的分页 -->
   <div class="page_list result_content" style="margin-left: 450px;">
                     {!! $shop->appends(['keywords' => $input])->render() !!}
+                    </div>
                     <!-- {--!! $user->render() !!--} 
                 </div>
 
@@ -220,7 +221,7 @@
 
   </div>
 
-</div>
+
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="{{asset('/admin/hui/lib/jquery/1.9.1/jquery.min.js')}}"></script> 
 <script type="text/javascript" src="{{asset('/admin/hui/lib/layer/2.4/layer.js')}}"></script>
