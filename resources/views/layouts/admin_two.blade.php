@@ -13,7 +13,14 @@
 </head>
 
 <style>
+
 /*  修正模板2 的 分页样式 */
+        a{
+            text-decoration:none;
+        }
+        a:hover {
+     text-decoration: underline; 
+}
     .result_content ul li span{
          padding:6px 12px;
     }

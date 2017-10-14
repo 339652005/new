@@ -102,14 +102,14 @@
         </td>
         
        
-        <td> {{ $arrType[$v->type_id] }} </td>
+        <td> {{$arrType[$v->type_id] }} </td>
        
        
         <td>{{$v->shop_addr}}</td>
         <td>{{$v->shop_x}},{{$v->shop_y}}</td>
-        <td><img style="width:100px;height:120px;" src="\{{$v->shop_logo}}" alt=""></td>
-                        <td><img style="width:100px;height:120px;" src="\{{$v->shop_zhizhao}}" alt=""></td>
-                        <td><img style="width:100px;height:120px;" src="\{{$v->shop_licence}}" alt=""></td>
+        <td><img style="width:100px;height:120px;" src="/{{$v->shop_logo}}" alt=""></td>
+                        <td><img style="width:100px;height:120px;" src="/{{$v->shop_zhizhao}}" alt=""></td>
+                        <td><img style="width:100px;height:120px;" src="/{{$v->shop_licence}}" alt=""></td>
                         <td>{{$v->shop_desc}}</td>
                        
         

@@ -79,25 +79,29 @@ class LoginController extends Controller
         }
         
         // 自定义的Model Manager
-        $manager = Seller::where('seller_name','=',$input['seller_name'])->first();
+        $seller = Seller::where('seller_name','=',$input['seller_name'])->first();
          // dd(session('code'));
-        if(!$manager){
+        if(!$seller){
             return redirect('seller/login')->with('errors','此用户不存在')->withInput();
         }
         
-        if( Hash::check($input['seller_pwd'],$manager->manager_pwd) ){
+        if( Hash::check($input['seller_pwd'],$seller->seller_pwd) ){
              return redirect('seller/login')->with('errors','密码错误')->withInput();
         }
        // 通过  数据信息存入 session  用户名唯一 
-       $sellerInfo = DB::table('dc_seller')->where('seller_name',$input['seller_name'])->first();
-       //数据信息存入 session 
-    $request->session()->push('seller_id', $sellerInfo->seller_id);
-    // $request->session()->push('sellerInfo.seller_name', 'developers');
+       // $sellerInfo = DB::table('dc_seller')->where('seller_name',$input['seller_name'])->first();
+
+    // 数据信息存入 session $seller_id 清楚其他的下线
+    // $request->session()->flush();
+    $seller_id =  $seller->seller_id;
+    $request->session()->push('seller_id', $seller_id);
+    // print_r( $request->session()->all());
     // 获取测试
     // $data = $request->session()->all();
     // $data = $request->session()->get('seller_id');
     // dd($data[0]);
-       return redirect('seller/index');     
+       // return redirect('seller/index');     
+    return redirect('seller/index',compact('seller_id'));     
     }
 
     public function index( )

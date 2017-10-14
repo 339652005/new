@@ -5,7 +5,7 @@
     <!--面包屑导航 开始-->
     <div class="crumb_warp">
         <!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
-        <i class="fa fa-home"></i> <a href="#">首页</a> &raquo; <a href="#">店铺管理</a> &raquo; 添加店铺
+        <i class="fa fa-home"></i> <a href="#">首页</a> &raquo; <a href="#">食品管理</a> &raquo; 添加食品
     </div>
     <!--面包屑导航 结束-->
 
@@ -49,14 +49,14 @@
                     <tr>
                         <th>菜品名称：</th>
                         <td>
-                            <input type="text" name="foods_name" value="芒果特饮">
+                            <input type="text" name="foods_name" value="芒果特饮{{rand(1111,9999)}}">
                         </td>
                     </tr>
                      <tr>
                         <th>菜品所属套餐：</th>
                             <td>
                                 <select style="width:150px;" name="foods_taocan" id="catid" class="required">
-                                <option value="0">所有分类</option>
+                               
                                 @foreach($taocan as $v)    
                                     <option value="{{ $v->taocan_id }}">　｜－－{{ $v->taocan_name }}</option>
                                 @endforeach  

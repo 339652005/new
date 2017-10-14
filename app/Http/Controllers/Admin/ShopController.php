@@ -25,6 +25,7 @@ class ShopController extends Controller
     {
       // echo "<pre/>";
         $type =  DB::table('dc_type')->get();
+        // dd( $type);
         foreach ($type as $key => $value) { 
             $arrType[$value->type_id] = $value->type_name;
         }

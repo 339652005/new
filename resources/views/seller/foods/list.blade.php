@@ -9,7 +9,7 @@
     </div>
     <!--面包屑导航 结束-->
 
-	<!--结果页快捷搜索框 开始-->
+	<!--结果页快捷搜索框 开始--> 
 	<div class="search_wrap">
         <form action="{{url('seller/foods')}}" method="get">
             <table class="search_tab">
@@ -60,12 +60,12 @@
                         <td class="tc">{{$v->foods_id}}</td>
                         <td>{{$v->foods_name}}</td>
                        
-                        <td>{{$arrType[$v->taocan_id]}}</td>
+                        <td>{{ $arrType[$v->taocan_id] }}</td>
                          <td>{{$v->foods_sales}}</td>
                         <td>{{$v->foods_price}}</td>
                         <td>{{$v->foods_desc}}</td>
                         
-                        <td><img style="width:100px;height:120px;" src="\{{$v->foods_piture}}" alt=""></td>
+                        <td><img style="width:100px;height:120px;" src="/{{$v->foods_piture}}" alt=""></td>
                         <td>{{$status[$v->foods_status]}}</td>
                         <td>
                             <a href="{{url('seller/foods/'.$v->foods_id.'/edit')}}">修改</a>

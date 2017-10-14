@@ -96,24 +96,19 @@
 //                $.post('请求的路径'，携带的数据参数，执行后返回的数据)
 //                {'key':'value','key1':'value1'}
                 $.post("{{url('seller/taocan/')}}/"+id,{'_method':'delete','_token':"{{csrf_token()}}"},function(data){
-//                    需要将json字符串变成json对象
-                    //var data = JSON.parse(data);
-
-//                    JSON.parse(jsonstr); //可以将json字符串转换成json对象
-//                    JSON.stringify(jsonobj); //可以将json对象转换成json对符串
-
-
+//                    
                     if(data.status == 0){
                         location.href = location.href;
                         layer.msg(data.msg, {icon: 6});
+                    }elseif(data.status == 2){
+                       location.href = location.href;
+                       layer.msg(data.msg, {icon: 5});
                     }else{
                         location.href = location.href;
                         layer.msg(data.msg, {icon: 5});
                     }
-
-
                 })
-//
+            },
 
             });
         }

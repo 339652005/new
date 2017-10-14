@@ -48,7 +48,7 @@
                     <th class="text-center">单价</th>
                     <th> </th>
                 </tr>
-                </thead>
+                </thead> 
                 <tbody>
 
           @foreach( $carts as $cart)
@@ -56,7 +56,7 @@
                 <tr>
                     <td class="col-sm-8 col-md-6">
                         <div class="media">
-                            <a class="thumbnail pull-left" href="#"> <img class="media-object" src="/photoes/p{{$cart->id}}.jpg" style="width: 100px; height: 72px;"> </a>
+                            <a class="thumbnail pull-left" href="#"> <img class="media-object" src="/{{$cart->options->piture}}" style="width: 80px; height: 100px;"> </a>
                             <div class="media-body">
                                 <h4 class="media-heading"><a href="#">{{$cart->name}}</a></h4>
                             </div>
@@ -89,7 +89,7 @@
 
                     <td>
                     <!-- 继续 -->
-                        <a href="/home/prev"> <button type="button" class="btn btn-default">
+                        <a href="/home/prev" target="_parent"> <button type="button"  class="btn btn-default">
                                 <span class="fa fa-shopping-cart"></span> 继续购物
                             </button>
                         </a></td>
@@ -100,7 +100,7 @@
                         </a> </td>
 
                     <td>
-                        <a href="/home/toorder" target='_blank'><button type="button" class="btn btn-success">
+                        <a href="/home/toorder" target='_parent'><button type="button" class="btn btn-success">
                             结算 <span class="fa fa-play"></span>
                         </button></a> 
 

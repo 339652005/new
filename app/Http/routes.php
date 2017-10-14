@@ -117,10 +117,7 @@ Route::get('show/{taocan_id}/{shop_id}','IndexController@taocanFoods');
 // 3.首页不同类别下的商品
 Route::get('index/type/{type_id}','IndexController@typeFoods');
 // 4.购物车资源理由
-Route::resource('cart','ShopController');
-
-
-
+// Route::resource('cart','ShopController');
 
 
 });
@@ -140,6 +137,10 @@ Route::get('/home/prev', 'Home\IndexController@index');
 
 // 购物车提交到订单 (判断登录)
 Route::get('/home/toorder', 'Home\OrderController@info');
+// 收货地址
+Route::post('/home/jsy', 'Home\OrderController@jsy');
+Route::get('/home/finish', 'Home\OrderController@finish');
+Route::get('home/ok', 'Home\OrderController@ok');
 
 
 /*区域一  登录木块*/

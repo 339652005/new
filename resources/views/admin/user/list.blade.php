@@ -214,7 +214,7 @@
   <!-- 修改后的分页 -->
   <div class="page_list result_content" style="margin-left: 450px;">
                     {!! $user->appends(['keywords' => $input])->render() !!}
-                    <!-- {--!! $user->render() !!--} 
+                    <!-- {--!! $user->render() !!--}  -->
                 </div>
 
   <div id="pageNav" class="pageNav">

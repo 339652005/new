@@ -1,32 +1,40 @@
-<!-- <!DOCTYPE HTML>
+﻿<!-- <!DOCTYPE HTML>
 <html>
 <head>
 <meta charset="utf-8">
 <meta name="renderer" content="webkit|ie-comp|ie-stand">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-[if lt IE 9]>
+<meta http-equiv="Cache-Control" content="no-siteapp" /> -->
+<!--[if lt IE 9]>
 <script type="text/javascript" src="lib/html5shiv.js"></script>
 <script type="text/javascript" src="lib/respond.min.js"></script>
-<![endif]
-<link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
-<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
-<link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
-<link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
-<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
-[if IE 6]>
+<![endif]-->
+
+<!--[if IE 6]>
 <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
-<![endif]
-<title>用户管理</title>
-</head> -->
+<![endif]-->
+
+
+
+
 @extends('layouts.admin')
 @section('content')
-<!-- 分页样式 -->
+ 
+<!-- </head> -->
+<title>管理员列表</title>
+<!-- </head> -->
 
+
+<link rel="stylesheet" type="text/css" href="/admin/hui/static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="/admin/hui/static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="/admin/hui/lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="/admin/hui/static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="/admin/hui/static/h-ui.admin/css/style.css" />
+ <!-- 分页样式 -->
 <link rel="stylesheet" href="{{ asset('admin/css/ch-ui.admin.css') }}">
- <style>
+<style>
         /*.result_content ul li.disabled{*/
 
             /*background:blue;*/
@@ -36,190 +44,206 @@
 
         }
 
-        #mysubmit{
-          margin-right: 500px;
-        }
+      
     </style>
-<!-- <link rel="stylesheet" href="{{-- asset('admin/css/font-awesome.min.css') --}}"> -->
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户中心 <span class="c-gray en">&gt;</span> 管理员管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
-<div class="pd-20">
-  <!-- <div class="text-c"> 日期范围：
-    <input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}'})" id="datemin" class="input-text Wdate" style="width:120px;">
-    -
-    <input type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d'})" id="datemax" class="input-text Wdate" style="width:120px;">
-    <input type="text" class="input-text" style="width:250px" placeholder="输入会员名称、电话、邮箱" id="" name=""><button type="submit" class="btn btn-success" id="" name=""><i class="icon-search"></i> 搜用户</button>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 资讯管理 <span class="c-gray en">&gt;</span> 资讯列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+	<div class="text-c">
+		<!-- <button onclick="removeIframe()" class="btn btn-primary radius">关闭选项卡</button> -->
+	<!--  <span class="select-box inline">
+		<select name="" class="select">
+			<option value="0">全部分类</option>
+			<option value="1">分类一</option>
+			<option value="2">分类二</option>
+		</select>
+		</span> 日期范围： -->
+		<!-- <input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'logmax\')||\'%y-%M-%d\'}' })" id="logmin" class="input-text Wdate" style="width:120px;">
+		- -->
+		<!-- <input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'logmin\')}',maxDate:'%y-%M-%d' })" id="logmax" class="input-text Wdate" style="width:120px;"> -->
+		<input type="text" name="" id="" placeholder=" 资讯名称" style="width:250px" class="input-text">
+		<button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜资讯</button>
+	</div>
+	<!-- <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a class="btn btn-primary radius" data-title="添加资讯" data-href="article-add.html" onclick="Hui_admin_tab(this)" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加资讯</a></span> <span class="r">共有数据：<strong>54</strong> 条</span> </div> -->
+	<div class="mt-20">
+		<table class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
+			<thead>
+				<tr class="text-c">
+					<!-- <th width="25"><input type="checkbox" name="" value=""> --><!-- </th>
+					<th width="80">ID</th> -->
 
-  </div> -->
-<!--结果页快捷搜索框 开始-->
-  <div class="search_wrap">
-        <form action="{{url('admin/Manager')}}" method="get">
-            <table class="search_tab">
-                <tr>
-
-                    <th width="70">关键字:</th>
-                    <td><input type="text" name="keywords" value="{{$input}}" placeholder="关键字"></td>
-                    <td><input type="submit" id="mysubmit" value="查询"></td>
-                </tr>
-            </table>
-        </form>
-    </div>
-    <!--结果页快捷搜索框 结束-->
-
-  <!-- <div class="cl pd-5 bg-1 bk-gray mt-20">
-    <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="icon-trash"></i> 批量删除</a>
-    <a href="javascript:;" onclick="user_add('550','','添加用户','user-add.html')" class="btn btn-primary radius"><i class="icon-plus"></i> 添加用户</a></span>
-    <span class="r">共有数据：<strong>88</strong> 条</span>
-  </div> -->
-  <table class="table table-border table-bordered table-hover table-bg table-sort">
-    <thead>
-      <tr class="text-c">
-        <!-- <th width="25"><input type="checkbox" name="" value=""></th> -->
-        <th width="40">ID</th>
+  
+		<th width="40">ID</th>
         <th width="60">用户名</th>
         <th width="40">邮箱</th>
        
         <th width="90">手机</th>
-        
+         
         <th width="40">权限</th>
-        
         <th width="30">状态</th>
+       
         <th width="80">操作</th>
-      </tr>
-    </thead>
-    <tbody>
-    <?php 
+				</tr>
+			</thead>
+			<tbody>
+			 <?php 
     $auth=['普通管理员','高级管理员','超级管理员'];
      $status=['禁用','启用'];
     ?>
 
     
  @foreach($manager as $k=>$v)
-  
-                     
-                   <!--  <tr>
-                        <td>
-                            <a href="{{url('admin/user/'.$v->user_id.'/edit')}}">修改</a>
-                            <a href="javascript:;" onclick="delUser({{$v->user_id}})">删除</a>
-                        </td>
-                    </tr> -->
-                   
+				<tr class="text-c">
 
-      <tr class="text-c">
-        <!-- <td><input type="checkbox" value="1" name=""></td> -->
-        
-        <td>{{$v->manager_id}}</td>
-       
-        <td><u style="cursor:pointer" class="text-primary" onclick="user_show('10001','360','','张三','user-show.html')">{{$v->manager_name}}</u></td>
-        <td>{{$v->manager_email}}</td>
-        <td>{{$v->manager_tell}}</td>
-        
-        <td>{{ $auth[$v->manager_auth]}}</td>
-        
-        <td class="user-status"><span class="label label-success">{{ $status[$v->manager_status]}}</span></td>
-        
-        <td class="f-14 user-manage">
+					<!-- <td><input type="checkbox" value="" name=""></td> -->
 
-        <!-- <a style="text-decoration:none" onClick="user_stop(this,'10001')" href="javascript:;" title="停用"><i class="icon-hand-down"></i>停用</a> -->
+					<td>
+					{{$v->manager_id}}
+					</td>
 
-         <a title="编辑" href="{{url('admin/manager/'.$v->manager_id.'/edit')}}" onclick="user_edit('4','550','','编辑','user-add.html')" class="ml-5" style="text-decoration:none"><span class="label label-success">编辑</span><i class="icon-edit"></i></a> 
-         <!-- <a style="text-decoration:none" class="ml-5" onClick="user_password_edit('10001','370','228','修改密码','user-password-edit.html')" href="javascript:;" title="修改密码"><i class="icon-key"></i>修改密码</a> -->
-          <!-- <a title="删除" href="javascript:;"  onclick="delUser({{--$v->user_id--}}" class="ml-5" style="text-decoration:none"><i class="icon-trash"></i>删除</a> -->
-          <a href="javascript:;" onclick="delUser({{$v->manager_id}})"><span class="label label-success">删除</span></a>
-        </td>
+					<td class="text-l">
+					{{$v->manager_name}}
+					<u style="cursor:pointer" class="text-primary" onClick="article_edit('查看','article-zhang.html','10002')" title="查看"></u>
+					</td>
 
+					<td>{{$v->manager_email}}</td>
 
-        <!-- <td>
-            <a href="{{--url('admin/Manager/'.$v->user_id.'/edit')--}}">修改</a>
-            <a href="javascript:;" onclick="delUser({{--$v->user_id--}})">删除</a>
-                        </td> -->
-      </tr>
+					<td>{{$v->manager_tell}}</td>
+
+					<td>{{ $auth[$v->manager_auth]}}</td>
+
+					<td ><span class="label label-success radius">{{ $status[$v->manager_status]}}</span></td>
+
+					
+
+					<!-- <td class="td-status"><span >草稿</span></td> -->
+					<td class="f-14 td-manage">
+					<!-- <a style="text-decoration:none" onClick="article_shenhe(this,'10001')" href="javascript:;" title="审核">审核</a> --> 
+
+					<a style="text-decoration:none" class="ml-5" onClick="article_edit('资讯编辑','article-add.html','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> 
+					
+					　　<a style="text-decoration:none" class="ml-5" onClick="article_del(this,'10001')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+				</tr>
  @endforeach
 
-    </tbody>
-<script>
+			</tbody>
+		</table>
 
-        function delUser(id){
-// alert($);
-            //询问框
-            layer.confirm('确认删除？', {
-                btn: ['确认','取消'] //按钮
-            }, function(){
-//                通过ajax 向服务器发送一个删除请求
-
-//                $.post('请求的路径'，携带的数据参数，执行后返回的数据)
-//                {'key':'value','key1':'value1'}
-                $.post("{{url('admin/manager/')}}/"+id,{'_method':'delete','_token':"{{csrf_token()}}"},function(data){
-//                    需要将json字符串变成json对象
-                    //var data = JSON.parse(data);
-
-//                    JSON.parse(jsonstr); //可以将json字符串转换成json对象
-//                    JSON.stringify(jsonobj); //可以将json对象转换成json对符串
-
-
-                    if(data.status == 0){
-                        location.href = location.href;
-                        layer.msg(data.msg, {icon: 6});
-                    }else{
-                        location.href = location.href;
-                        layer.msg(data.msg, {icon: 5});
-                    }
-
-
-                })
-//
-
-            });
-        }
-
-    </script>
-  </table>
-  <!-- 修改后的分页 -->
-  <div class="page_list result_content" style="margin-left: 450px;">
+		
+		
+ <!-- 修改后的分页 -->
+    <div class="page_list result_content" style="margin-left: 450px;">
                     {!! $manager->appends(['keywords' => $input])->render() !!}
-                    <!-- {--!! $Manager->render() !!--} 
-                </div>
+                    <!-- {--!! $user->render() !!--}  -->
+    </div>
 
-  <div id="pageNav" class="pageNav">
-     
-
-  </div>
-
+	</div>
 </div>
 <!--_footer 作为公共模版分离出去-->
-<script type="text/javascript" src="{{asset('/admin/hui/lib/jquery/1.9.1/jquery.min.js')}}"></script> 
-<script type="text/javascript" src="{{asset('/admin/hui/lib/layer/2.4/layer.js')}}"></script>
-<script type="text/javascript" src="{{asset('/admin/hui/static/h-ui/js/H-ui.min.js')}}"></script> 
-<script type="text/javascript" src="{{asset('/admin/hui/static/h-ui.admin/js/H-ui.admin.js')}}"></script>
-<!--/_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="/admin/hui/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="/admin/hui/static/h-ui/js/H-ui.min.js"></script> 
+<script type="text/javascript" src="/admin/hui/static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
 
 <!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript" src="/admin/hui/lib/My97DatePicker/4.8/WdatePicker.js"></script> 
 <script type="text/javascript" src="/admin/hui/lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
 <script type="text/javascript" src="/admin/hui/lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
-window.onload = (function(){
-    // optional set
-    pageNav.pre="&lt;上一页";
-    pageNav.next="下一页&gt;";
-    // p,当前页码,pn,总页面
-    pageNav.fn = function(p,pn){$("#pageinfo").text("当前页:"+p+" 总页: "+pn);};
-    //重写分页状态,跳到第三页,总页33页
-    pageNav.go(1,13);
-});
 $('.table-sort').dataTable({
-	"lengthMenu":false,//显示数量选择 
-	"bFilter": false,//过滤功能
-	"bPaginate": false,//翻页信息
-	"bInfo": false,//数量信息
 	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
 	"bStateSave": true,//状态保存
+	"pading":false,
 	"aoColumnDefs": [
 	  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-	  {"orderable":false,"aTargets":[0,8,9]}// 制定列不参与排序
+	  {"orderable":false,"aTargets":[0,8]}// 不参与排序的列
 	]
 });
-</script>
+
+/*资讯-添加*/
+function article_add(title,url,w,h){
+	var index = layer.open({
+		type: 2,
+		title: title,
+		content: url
+	});
+	layer.full(index);
+}
+/*资讯-编辑*/
+function article_edit(title,url,id,w,h){
+	var index = layer.open({
+		type: 2,
+		title: title,
+		content: url
+	});
+	layer.full(index);
+}
+/*资讯-删除*/
+function article_del(obj,id){
+	layer.confirm('确认要删除吗？',function(index){
+		$.ajax({
+			type: 'POST',
+			url: '',
+			dataType: 'json',
+			success: function(data){
+				$(obj).parents("tr").remove();
+				layer.msg('已删除!',{icon:1,time:1000});
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});		
+	});
+}
+
+/*资讯-审核*/
+function article_shenhe(obj,id){
+	layer.confirm('审核文章？', {
+		btn: ['通过','不通过','取消'], 
+		shade: false,
+		closeBtn: 0
+	},
+	function(){
+		$(obj).parents("tr").find(".td-manage").prepend('<a class="c-primary" onClick="article_start(this,id)" href="javascript:;" title="申请上线">申请上线</a>');
+		$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
+		$(obj).remove();
+		layer.msg('已发布', {icon:6,time:1000});
+	},
+	function(){
+		$(obj).parents("tr").find(".td-manage").prepend('<a class="c-primary" onClick="article_shenqing(this,id)" href="javascript:;" title="申请上线">申请上线</a>');
+		$(obj).parents("tr").find(".td-status").html('<span class="label label-danger radius">未通过</span>');
+		$(obj).remove();
+    	layer.msg('未通过', {icon:5,time:1000});
+	});	
+}
+/*资讯-下架*/
+function article_stop(obj,id){
+	layer.confirm('确认要下架吗？',function(index){
+		$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_start(this,id)" href="javascript:;" title="发布"><i class="Hui-iconfont">&#xe603;</i></a>');
+		$(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已下架</span>');
+		$(obj).remove();
+		layer.msg('已下架!',{icon: 5,time:1000});
+	});
+}
+
+/*资讯-发布*/
+function article_start(obj,id){
+	layer.confirm('确认要发布吗？',function(index){
+		$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_stop(this,id)" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a>');
+		$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
+		$(obj).remove();
+		layer.msg('已发布!',{icon: 6,time:1000});
+	});
+}
+/*资讯-申请上线*/
+function article_shenqing(obj,id){
+	$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">待审核</span>');
+	$(obj).parents("tr").find(".td-manage").html("");
+	layer.msg('已提交申请，耐心等待审核!', {icon: 1,time:2000});
+}
+
+</script> 
 </body>
-@endsection
 <!-- </html> -->
+@endsection
+<!-- </html>

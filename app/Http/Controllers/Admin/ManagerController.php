@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Model\Manager;
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
+use App\Http\Requests; 
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
@@ -45,37 +45,30 @@ class ManagerController extends Controller
 
 
         $input = $request->input('keywords')?$request->input('keywords'):'';
-        $manager = Manager::orderBy('manager_id','asc')->where('manager_name','like','%'.$input.'%')->paginate(10);
-        // dd($manager);
+        $manager = Manager::orderBy('manager_id','asc')->where('manager_name','like','%'.$input.'%')->paginate(5);
+// dd( $manager);
+        foreach ($manager as $key => $value) {
+          # code...
+          // dd( $value->manager_name);
+        }
         return view('admin.manager.list',compact('manager','input'));
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function create()
     {
-          // return 'create';
          return view('admin.manager.add');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+   
     public function store(Request $request)
     {
-         // return 'store';
-         // dd($request->all());
 //        1 接受前台用户传过来的数据
           $input = $request->except('_token');
+          // dd($input);
 //        2 执行数据库添加操作（向user表添加一条记录）
-//        第一种添加方式（创建一个空模型，给模型的属性赋值，然后执行save方法）
+//   第一种添加方式（创建一个空模型，给模型的属性赋值，然后执行save方法）
            $manager = new Manager();
            $manager->manager_name = $input['manager_name'];
            $manager->manager_tell = $input['manager_tell'];
@@ -83,8 +76,9 @@ class ManagerController extends Controller
            $manager->manager_status = $input['manager_status'];
            $manager->manager_auth = $input['manager_auth'];
            $manager->manager_pwd = Crypt::encrypt($input['manager_pwd']) ;
-            $re = $manager->save();
-           
+
+           // dd($manager);
+            $res = $manager->save();
 
 //          第二种添加方式（create）
 //        $input = [
@@ -99,34 +93,20 @@ class ManagerController extends Controller
 
         //  3 判断执行是否成功
         //  4 如果成功，跳转到列表页 ；如果失败，跳转到添加页继续添加
-          if($re){
+         // dd($res);
+          if($res){
               //return '成功';
-              return redirect('admin/manager');  //列表页
+              return redirect('/admin/manager');  //列表页
           }else{
               //return '失败';
-              return redirect('admin/manager/create')->with('msg','用户添加失败');  //添加页
+              return redirect('/admin/manager/create')->with('msg','用户添加失败');  //添加页
           }
 
           //补充表单验证
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        return 'show';
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function edit($id)
     {
         // return 'edit';
@@ -137,17 +117,11 @@ class ManagerController extends Controller
         return view('admin.manager.edit',compact('manager'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
+    
     public function update(Request $request, $id)
     {
-        // return 'update';
-          // dd($request->all());
+        
 //        1 接收要修改的记录的内容和id
           // $input  = $request->input('manager_name');
          $input = $request->except('_token','_method');

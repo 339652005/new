@@ -11,7 +11,7 @@
         <tbody>
           <tr>
             <th width="100" class="text-r"><span class="c-red">*</span> 用户名：</th>
-            <td><input type="text" style="width:200px" class="input-text" value="admin{{rand(1111,9999)}}" placeholder="请输入用户名" id="user-name" name="manager_name" datatype="*2-16" nullmsg="用户名不能为空"></td>
+            <td><input type="text" style="width:200px" class="input-text" value="manager{{rand(1111,9999)}}" placeholder="请输入用户名" id="user-name" name="manager_name" datatype="*2-16" nullmsg="用户名不能为空"></td>
           </tr>
           <!-- <tr>
             <th class="text-r"><span class="c-red">*</span> 性别：</th>
@@ -24,19 +24,19 @@
           </tr> -->
           <tr>
             <th class="text-r"><span class="c-red">*</span> 密码：</th>
-            <td><input type="password" style="width:300px" class="input-text" value="admin" placeholder="" id="user-tel" name="manager_pwd"></td>
+            <td><input type="password" style="width:300px" class="input-text" value="manager" placeholder="" id="user-tel" name="manager_pwd"></td>
           </tr>
           <tr>
             <th class="text-r">确认密码：</th>
-            <td><input type="password" style="width:300px" class="input-text" value="admin" placeholder="" id="user-email" name="manager_repwd"></td>
+            <td><input type="password" style="width:300px" class="input-text" value="manager" placeholder="" id="user-email" name="manager_repwd"></td>
           </tr>
           <tr>
             <th class="text-r"><span class="c-red">*</span> 手机：</th>
-            <td><input type="text" style="width:300px" class="input-text" value="176{{rand(11111111,99999999) }}" placeholder="" id="user-tel" name="manager_tell"></td>
+            <td><input type="text" style="width:300px" class="input-text" value="176{{rand(11111111,99999999)}}" placeholder="" id="user-tel" name="manager_tell"></td>
           </tr>
           <tr>
             <th class="text-r">邮箱：</th>
-            <td><input type="text" style="width:300px" class="input-text" value="{{rand(111111111,999999999)}}@qq.com" placeholder="" id="user-email" name="manager_email"></td>
+            <td><input type="text" style="width:300px" class="input-text" value="{{rand(11111111,99999999)}}@qq.com" placeholder="" id="user-email" name="manager_email"></td>
           </tr>
           <!-- <tr>
             <th class="text-r">头像：</th>
@@ -55,11 +55,11 @@
           <tr>
             <th class="text-r"><span class="c-red">*</span> 状态：</th>
             <td><label>
-                <input name="manager_status" type="radio" id="six_1" value="0" checked>
-                启用</label>
+                <input name="manager_status" type="radio" id="six_1" value="0" >
+                禁用</label>
               <label>
-                <input type="radio" name="manager_status" value="1" id="six_0">
-                禁用</label></td>
+                <input type="radio" name="manager_status" value="1" id="six_0" checked>
+                启用</label></td>
           </tr> 
 <!-- 默认使用最低的权限 -->
           <tr>
@@ -88,6 +88,8 @@
           </tr>
         </tbody>
       </table>
+
+     
     </form>
   </div>
 </div>

@@ -24,8 +24,9 @@ class ShopController extends Controller
         $seller_id = $food->seller_id;
         // 该店铺信息 食品归属店 单店版
         $shop =  DB::table('dc_shop')->where('seller_id',$seller_id)->first();
-
-       Cart::add($food->foods_id,$food->foods_name,1,$food->foods_price,[ 'shop'  =>  $shop ]);
+        $piture = $food->foods_piture;
+        $carts = Cart::add($food->foods_id,$food->foods_name,1,$food->foods_price,[ 'shop'  =>  $shop ,'piture'=>$piture ]);
+      
        return redirect()->route('cart');
    }
 
@@ -42,7 +43,10 @@ class ShopController extends Controller
         $total = Cart::subtotal();
         //购物车商品数量
         $count = Cart::count();
-       // dd($carts);
+        // foreach ($carts as $key => $value) {
+        //    $piture =  $value->options->piture;
+        //    echo  $piture;
+        // }
         return view('product.cart',['carts'=>$carts,'total'=>$total,'count'=>$count]);
     }
 

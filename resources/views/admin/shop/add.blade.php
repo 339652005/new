@@ -56,7 +56,7 @@
                         <th>店铺类型：</th>
                             <td>
                                 <select style="width:150px;" name="shop_type" id="catid" class="required">
-                                <option value="">所有分类</option>
+                               <!--  <option value="">所有分类</option> -->
                                 @foreach($type as $v)    
                                     <option value="{{ $v->type_id }}">　｜－－{{ $v->type_name }}</option>
                                 @endforeach  

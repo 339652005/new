@@ -78,8 +78,8 @@
                     <tr>
                         <th><i class="require">*</i>商品照片：</th>
                         <td>
-                          <input type="hidden" size="50" name="foods_piture" id="shop_logo"> 
-<input id="file_upload_logo" name="shop_logo" type="file" multiple="true">
+                          <input type="hidden" readonly  size="50" name="foods_piture" value="{{ $foods->foods_piture }}" id="shop_logo"> 
+<input id="file_upload_logo" name="shop_logo"  type="file" multiple="true">
 <p><img id="img_logo" alt="上传后显示图片"  style="max-width:350px;max-height:100px;" /></p>
                         </td>
                     </tr>

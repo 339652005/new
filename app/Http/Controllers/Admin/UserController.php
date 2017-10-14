@@ -25,7 +25,7 @@ class UserController extends Controller
         //  1.三元检测是否有搜索的关键字没有就为空 有接收
         $input = $request->input('keywords')?$request->input('keywords'):'';
         //  2.用关键字为条件查找数据库符合条件的数据  分页显示
-        $user = User::orderBy('user_id','asc')->where('user_name','like','%'.$input.'%')->paginate(10);
+        $user = User::orderBy('user_id','asc')->where('user_name','like','%'.$input.'%')->paginate(5);
         //  3.返回 用户列表页视图
         return view('admin.user.list',compact('user','input'));
     }

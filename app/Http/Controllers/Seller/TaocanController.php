@@ -86,16 +86,19 @@ class taocanController extends Controller
     public function update(Request $request, $id)
     {
       // 限定数据为当前用户
-      // $data = $request->session()->get('seller_id');
-      // $seller_id = $data[0];
+      $data = $request->session()->get('seller_id');
+      $seller_id = $data[0];
 
         // 1 接收要修改的记录的内容和id
           $input = $request->except('_token','_method');
-          
-          $taocan = new Taocan();  
+          // $taocan = new Taocan();     // new的是添加
+          $taocan = Taocan::find($id);  // foos::find() 读取数据再修改
+
           $taocan->taocan_name = $input['taocan_name'];
+          $taocan->seller_id = $seller_id;   
           $taocan->taocan_price = $input['taocan_price'];
-          $re = $taocan->save();   //save()保存数据
+          // dd($taocan);
+          $re = $taocan->save();   //save()保存数据   ?? 猪
 //        3 判断执行是否成功
         if($re){
             // return '成功';
@@ -120,11 +123,10 @@ class taocanController extends Controller
       if($taocan){
         //有商品
         $data=[
-                'status'=>1,
+                'status'=>2,
                 'msg'=>'有商品,禁止删除'
             ];
-         // dd($data['msg']);
-         return  $data;
+        return   $data;
       }
      
       // dd($taocan);

@@ -12,6 +12,14 @@
     <link href="/home/css/base.v1204100040.css" rel="stylesheet" type="text/css" media="all" />
     <link href="/home/css/res.v415131610.css" rel="stylesheet" type="text/css" media="all" />
     <script type="text/javascript" src="{{ asset('admin/js/jquery-1.8.3.min.js')}}"></script>
+    <style type="text/css">
+        a {
+            text-decoration:none;
+        }
+        a:hover {
+     text-decoration: underline; 
+}
+    </style>
 </head>
 <body>
     
@@ -70,10 +78,10 @@
                     <div id="appMsgBox" class="rel zx1"></div>
                 </li>
             	<li class="nav_first"></li> 
-                    <li class="nav_on"><div class="nav_in"><a href="http://hefei.xiaomishu.com" class="nav_bg">首页</a></div></li>
-                    <li class="nav_off"><div class="nav_in"><a href="http://hefei.xiaomishu.com/shop/search/" class="nav_bg">我的购物车</a></div></li>
+                    <li class="nav_on"><div class="nav_in"><a href="{{url('home/index')}}" class="nav_bg">首页</a></div></li>
+                    <li class="nav_off"><div class="nav_in"><a href="{{url('/cart')}}" class="nav_bg">我的购物车</a></div></li>
                     
-                    <li class="nav_off "><div class="nav_in"><a href="http://hefei.xiaomishu.com/award/" class="nav_bg" target="_blank">个人中心</a></div></li> 
+                    <li class="nav_off "><div class="nav_in"><a href="{{url('home/userinfo')}}" class="nav_bg" target="_blank">个人中心</a></div></li> 
                             
                 <li class="nav_last"></li>                
             </ul>
