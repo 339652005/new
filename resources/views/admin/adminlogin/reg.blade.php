@@ -6,7 +6,7 @@
 <body> 
 <div class="pd-20">
   <div class="Huiform">
-    <form action="{{url('admin/manager')}}" method="post">
+    <form action="{{url('admin/doreg')}}" method="post">
       <table class="table table-bg">
       <!-- //3.模板中数据 -->
       

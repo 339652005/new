@@ -112,12 +112,76 @@ class LoginController extends Controller
     /* 注册 */ 
     public function reg( )
     {
-// 1.当前用户
-      // $data = $request->session()->get('manager_id');
-      // $self_id = $data[0];
-      // $self = Manager::where('manager_id',$self_id)->first();
-     
+
       return view('admin.adminlogin.reg');
+    }
+     /* 注册 */ 
+    public function doreg( )
+    {
+         // 1 接受前台用户传过来的数据
+          $input = $request->except('_token');
+          
+        // 2.表单验证
+        $rule=[     // 常用
+            'manager_name'=>'required|regex:/^\w{4,12}$/', 
+            'manager_pwd'=>'required|regex:/^\w{4,12}$/',
+            'manager_repwd'=>'required|same:manager_pwd',
+            'manager_tell'=>'required|regex:/^1[3578]\d{9}$/',
+            'manager_email'=>'required|email',
+            'manager_status'=>'required',
+            'manager_auth'=>'required'
+        ];
+        $msg = [
+            // 常用
+            'manager_name.required'=>'请输入用户名',  // 错误返回信息
+            'manager_pwd.required'=>'请输入密码',
+            'manager_repwd.required'=>'请输入密码',
+            'manager_name.regex'=>'请输入4-12位数字,字母,下划线',
+            'manager_pwd.regex'=>'请输入4-12位数字,字母,下划线',
+            'manager_pwd.same'=>'您两次输入的密码不一致',
+            // 邮箱 电话
+            'manager_email.required'=>'请输入邮箱',
+            'manager_tell.required'=>'请输入电话',
+            'manager_tell.regex'=>'手机号码输入不正确',
+            'manager_email.email'=>'邮箱输入不正确',
+            // 状态权限
+            'manager_status.required'=>'请输入状态',
+            'manager_auth.required'=>'请输入权限',
+
+        ];
+
+      
+        // 2-2进行表单验证
+        $validator = Validator::make($input,$rule,$msg);
+        if ($validator->fails()) {
+          // dd();
+            return redirect('admin/manager/create')  // 跳转admin/manager/create
+                ->withErrors($validator)             // 返回错误
+                ->withInput();                       //数据闪存
+        }
+
+      
+        // 执行数据库添加操作（向user表添加一条记录）
+          // 第一种添加方式（创建一个空模型，给模型的属性赋值，然后执行save方法）
+           $manager = new Manager();
+           $manager->manager_name = $input['manager_name'];
+           $manager->manager_tell = $input['manager_tell'];
+           $manager->manager_email = $input['manager_email'];
+           $manager->manager_status = $input['manager_status'];
+           $manager->manager_auth = $input['manager_auth'];
+           // 加密
+           $manager->manager_pwd = Crypt::encrypt($input['manager_pwd']) ;
+
+       
+        // 新数据存入
+        $res = $manager->save();
+
+      //  3 判断执行是否成功
+      if($res){
+          return redirect('/admin/manager');  
+      }else{
+          return redirect('/admin/manager/create')->with('msg','用户管理员失败');  
+      }
     }
 
     /*首页*/

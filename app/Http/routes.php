@@ -26,6 +26,7 @@ Route::get('/', function () {
 // 1.登录 退出 改密码
 Route::get('admin/login','Admin\LoginController@login');
 Route::get('admin/reg','Admin\LoginController@reg');
+Route::post('admin/doreg','Admin\LoginController@doreg');
 // Route::get('reg','LoginController@reg');
 Route::post('admin/dologin','Admin\LoginController@dologin');
 Route::get('admin/yzm','Admin\LoginController@yzm');
