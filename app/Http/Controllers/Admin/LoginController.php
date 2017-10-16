@@ -17,8 +17,8 @@ require_once app_path().'/Http/Org/code/Code.class.php';
 use App\Http\Org\code\Code;
 
 // composer使用验证码
-//use Gregwar\Captcha\CaptchaBuilder;
-//use Gregwar\Captcha\PhraseBuilder;
+// use Gregwar\Captcha\CaptchaBuilder;
+// use Gregwar\Captcha\PhraseBuilder;
 // Input的使用
 use Illuminate\Support\Facades\Input;
 
@@ -45,23 +45,16 @@ class LoginController extends Controller
      */
     public function login()
     {
-        // return app_path();   //测试
         return view('admin.adminlogin.login');  
     }
     
     public function dologin(Request $request)
     {
-         //return 'first';   //测试
-        // return $request->all();   //返回json对象形式
-//          $request->all();
-//          $request->only('_token');
-//          $input = Input::except('_token');
 
         // 1.接受数据
         $input = Input::except('_token');
-        //dd($input); //manager_pwd manager_pwd
+
         // 2.表单验证Validator 三种方式了解
-        // 对提交过来的数据进行表单验证   位数 非空 (正则)
         $rule=[
             'manager_name'=>'required|between:1,12',  // 规则:非空 位数
             'manager_pwd'=>'required|between:1,12',
@@ -73,112 +66,72 @@ class LoginController extends Controller
             'manager_pwd.between'=>'密码为4-18位'
         ];
         // 2-2进行手工表单验证
-        // Validator::make('要进行表单验证的数据'，‘验证规则’,'设置提示信息')
         $validator = Validator::make($input,$rule,$msg);
-        //  如果验证失败(返回)验证通过(继续逻辑验证)
         if ($validator->fails()) {
             return redirect('admin/login')  // 跳转
                 ->withErrors($validator)    // 返回错误
                 ->withInput();              //数据闪存
         }
-        // 3.逻辑验证
-        // dd($input['code']);
-        
 
+        // 3.逻辑验证
         if($input['code'] != session('code')){
             return redirect('admin/login')->with('errors','验证码错误')->withInput();
         }
-        // Manager model
 
-        // 自定义的Model Manager
+        // 检测该登录用户是否存在
         $manager = Manager::where('manager_name','=',$input['manager_name'])->first();
-         // dd(session('code'));
         if(!$manager){
             return redirect('admin/login')->with('errors','此用户不存在')->withInput();
         }
-        //  密码是否正确使用hash哈希加密
-        // return Hash::make($input['manager_pwd']);  //$2y$10$OSKZAC/0Uy/PfSndOiZpY../8kVIDSyLt3iedyFQUJ33fcXJI2U2O
-        if( Hash::check($input['manager_pwd'],$manager->manager_pwd) ){
-             return redirect('admin/login')->with('errors','密码错误')->withInput();
+
+        // 检测是否禁用
+        if ($manager->manager_status==0) {
+           return redirect('admin/login')->with('errors','账号锁定,禁止登陆')->withInput();
         }
-
-       /* 
-        *1.密码加密方式 MD5加密+外延 例如'abs'+md5()
-        *2.hash加密 60位秘钥  Hash::check(要被验证的密码,已经加密的密码)
-        *3.Crypt 秘钥255位 Crypt:encrypt加密 decrypt解密
-        */
        
-
-/*  第一种加密方式:Crypt(255位加密)  */
-//Crypt::encrypt()  加密
-//Crypt::decrypt()  解密
-        /* dd(Crypt::encrypt($manager->manager_pwd));//eyJpdiI6Ild5YlBVQXBaVGVSSTNyMk9jREdYMHc9PSIsInZhbHVlIjoiR01LK0s5U0lEZ3E0aUR0MCtwSm9pUT09IiwibWFjIjoiMGZjMWU3ZjVkMDhkNWRhMTQxZTY5NDQ1N2EyZTI0YTNmYTBjYzlkYTg4NjI4Y2ZiYjJlYTVjMTliMTJiMzM1ZCJ9 数据库不是这种加密的报错 把这个加密后的字符串复制金数据库
-         if(Crypt::decrypt($manager->manager_pwd)  !=   $input['manager_pwd']){
-             return redirect('admin/login')->with('errors','密码错误')->withInput();
-         }*/
-
-/*  第二种加密方式:MD5(32位加密)  */ 
-        /*$salt = 'abc';  // md5()加密不够安全已经破解加上前延
-        $str = $salt.$input['manager_name'];
-        dd(md5($str));
-        //b508656c244c20b3c8dd7993d7832f39*/
-
-
-/*  第三种加密方式:哈希加密(60位加密)  */   
-//  Hash::make()   加密
-//  Hash::check()  验证被加密密码   
-       /* echo Hash::make('123456');   //以密码123456为例
-        $str = '$2y$10$G3p/Pc5LpBQ6uTnaxaPO6eycWp15tKobmJzTo7T3ntEN8hwBSHD4W';
-        //哈希加密(60位加密)密码是动态变化的 => Hash::check() 检查
-        
-        // hash验证密码是否正确(每一个出现过的密码都正确)
-        // Hash::check(要被验证的密码,经过hash加密后的密码)
-        if(Hash::check('123456',$str)) {
-            echo "密码正确";
-        }else{
-            echo '密码错误';
+        // 3.2 密码是否正确
+        if(Crypt::decrypt($manager->manager_pwd)  !=   $input['manager_pwd']){
+         
+        return redirect('admin/login')->with('errors','密码错误')->withInput();
         }
-        */
-
-        // 4.session
-       
-       $managerInfo = DB::table('dc_manager')->where('manager_name',$input['manager_name'])->first();
-      
-       // 数据存入session
-        // 5.后台首页
-       return redirect('admin/index');   
-
+        // session存数据 管理员
+        $manager_id =  $manager->manager_id;
+        $request->session()->forget('manager_id');  // 清楚其他的 下线
+        $request->session()->push('manager_id', $manager_id);
+            // 5.后台首页
+        return redirect('admin/index');     
         
     }
+
+    /* 显示登录 */ 
     public function index( )
     {
         return view('admin.adminlogin.index');
-
     }
 
+    /*首页*/
     public function welcome()
     {
-       //dd($_SERVER);
+       //dd($_SERVER);  // 服务器信息
         return view('admin.adminlogin.welcome');
     }
 
     public function quit()
     {
-        session()->flush();
-
-//        或者
-//        session(['user'=>null]);
-
+        // session()->flush(); //退出销毁对应session
+        $request->session()->forget('manager_id');  //  下线
+       // 或者 session(['user'=>null]);
         return redirect('admin/login');
-   }
+    }
 
+    // 自定义验证码
     public function yzm( )
     {
         $code = new Code();
         $code->make();
     }
 
-    // composer验证码生成(第二种方式查找手册)
+    // composer验证码生成
     public function captcha($tmp)
     {
         $phrase = new PhraseBuilder;
@@ -202,7 +155,5 @@ class LoginController extends Controller
         header("Content-Type:image/jpeg");
         $builder->output();
     }
-
-
 
 }  //this is end of the loginController

@@ -31,7 +31,7 @@ class ShopController extends Controller
         }
         // dd( $arrType);
         $input = $request->input('keywords')?$request->input('keywords'):'';
-        $shop = Shop::orderBy('shop_id','asc')->where('shop_name','like','%'.$input.'%')->paginate(10);
+        $shop = Shop::orderBy('shop_id','asc')->where('shop_name','like','%'.$input.'%')->paginate(5);
         return view('admin.shop.list',compact('shop','input','arrType'));
     }
 

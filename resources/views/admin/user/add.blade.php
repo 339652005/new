@@ -4,14 +4,30 @@
   
 <!-- </head> -->
 <body>
+@if (count($errors) > 0)
+            <div class="alert alert-danger input-text size-L" style="color:red;">
+            <ul>
+                @if(is_object($errors))
+                    @foreach ($errors->all() as $error)
+                      <li>{{ $error }}</li>
+                    @endforeach
+                @else
+                      <li>{{ $errors }}</li>
+                @endif
+            </ul>
+            </div>
+        @endif
+        
 <div class="pd-20">
   <div class="Huiform">
+   
+
     <form action="{{url('admin/user')}}" method="post">
       <table class="table table-bg">
         <tbody>
           <tr>
             <th width="100" class="text-r"><span class="c-red">*</span> 用户名：</th>
-            <td><input type="text" style="width:200px" class="input-text" value="admin{{rand(1111,9999)}}" placeholder="请输入用户名" id="user-name" name="user_name" datatype="*2-16" nullmsg="用户名不能为空"></td>
+            <td><input type="text" style="width:200px" class="input-text" value="user{{rand(1111,9999)}}" placeholder="请输入用户名" id="user-name" name="user_name" datatype="*2-16" nullmsg="用户名不能为空"></td>
           </tr>
           <!-- <tr>
             <th class="text-r"><span class="c-red">*</span> 性别：</th>
@@ -24,11 +40,11 @@
           </tr> -->
           <tr>
             <th class="text-r"><span class="c-red">*</span> 用户密码：</th>
-            <td><input type="password" style="width:300px" class="input-text" value="admin" placeholder="" id="user-tel" name="user_pwd"></td>
+            <td><input type="password" style="width:300px" class="input-text" value="user" placeholder="" id="user-tel" name="user_pwd"></td>
           </tr>
           <tr>
             <th class="text-r">确认密码：</th>
-            <td><input type="password" style="width:300px" class="input-text" value="admin" placeholder="" id="user-email" name="user_repwd"></td>
+            <td><input type="password" style="width:300px" class="input-text" value="user" placeholder="" id="user-email" name="user_repwd"></td>
           </tr>
           <tr>
             <th class="text-r"><span class="c-red">*</span> 手机：</th>
@@ -42,23 +58,27 @@
             <th class="text-r">头像：</th>
             <td><input type="file" class="" name="user_face" multiple></td>
           </tr>
-         <!--  <tr>
+          <!-- <tr>
             <th class="text-r">地址：</th>
             <td><input type="text" style="width:300px" class="input-text" value="" placeholder="" id="user-address" name="user-address"></td>
-          </tr>
-          <tr>
-            <th class="text-r">简介：</th>
-            <td><textarea class="input-text" name="user-info" id="user-info" style="height:100px;width:300px;"></textarea></td>
           </tr> -->
+          <tr>
+            <th class="text-r">会员等级</th>
+            <td>
+<label for=""><input type="radio" checked name="user_auth" value="0" >青铜会员　</label>
+<label for=""><input type="radio" name="user_auth" value="1" >白银会员　</label>
+<label for=""><input type="radio" name="user_auth" value="2"  >黄金会员　</label>
+<label for=""><input type="radio" name="user_auth" value="3">铂金会员　</label>
+<label for=""><input type="radio" name="user_auth" value="4">钻石会员　</label>
+<label for=""><input type="radio" name="user_auth" value="5" >星耀会员　</label>
+            </td>
+          </tr>
 
           <!-- 状态默认为启用0 -->
           <tr>
             <th class="text-r"><span class="c-red">*</span> 状态：</th>
-            <td><label>
-                <input name="user_status" type="radio" id="six_1" value="0" checked>
-                启用</label>
-              <label>
-                <input type="radio" name="user_status" value="1" id="six_0">
+    <td><label><input name="user_status" type="radio" id="six_1" value="1" checked >启用</label>
+    <label><input type="radio" name="user_status" value="0" id="six_0">
                 禁用</label></td>
           </tr> 
 <!-- 默认使用最低的权限 -->

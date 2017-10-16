@@ -38,6 +38,7 @@ Route::get('admin/loginput','Admin\LoginController@loginout');
 Route::get('admin/repass','Admin\LoginController@repass');
 // 2.官方管理员
 Route::resource('admin/manager','Admin\ManagerController');
+// Route::resource('admin/changeStatus/{id}','Admin\ManagerController@changeStatus');
 // 3.商家管理
 Route::resource('admin/seller','Admin\SellerController');
 // 4.用户管理
@@ -79,10 +80,11 @@ Route::get('yzm','LoginController@yzm');
 //通过composer安装的验证码
 //Route::get('/code/captcha/{tmp}', 'Admin\LoginController@captcha');   
 // 显示后台首页
-Route::get('index','LoginController@index');
+Route::get("index",'LoginController@index');
 Route::get('welcome','LoginController@welcome');
 // 退出的路由
-Route::get('loginput','LoginController@loginout');
+Route::get('loginout','LoginController@loginout');
+Route::get('myselfinfo/{id}','LoginController@myselfinfo');
 // 修改密码的路由
 Route::get('repass','LoginController@repass');
 

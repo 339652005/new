@@ -22,7 +22,21 @@
 @extends('layouts.admin')
 @section('content')
 <body>
-<div class="pd-20">
+
+ @if (count($errors) > 0)
+            <div class="alert alert-danger input-text size-L" style="color:red;">
+            <ul>
+                @if(is_object($errors))
+                    @foreach ($errors->all() as $error)
+                      <li>{{ $error }}</li>
+                    @endforeach
+                @else
+                      <li>{{ $errors }}</li>
+                @endif
+            </ul>
+            </div>
+        @endif
+     <div class="pd-20">   
   <form class="Huiform" action="{{url('admin/user/'.$user->user_id)}}" method="post">
     <table class="table">
       <tbody>
@@ -69,48 +83,65 @@
           </tr> -->
 
           <!-- 状态默认为启用0 -->
-          <?php 
-                    $auth=['普通管理员','高级管理员','超级管理员'];
-                    $status=['启用','禁用'];
-                    ?>
+           <?php 
+    $auth=['青铜会员','白银会员','黄金会员','铂金会员','钻石会员','星耀会员'];
+    $status=['禁用','启用'];
+    ?>
+          
           <tr>
-            <th class="text-r"><span class="c-red">*</span> 状态：</th>
+            <th class="text-r"><span class="c-red">*</span> 会员等级：</th>
              <td>
-                            <label for=""><input type="radio" name="user_status" value="1" 
-                             @if($user->user_status=='1')
+                            <label for=""><input type="radio" name="user_auth" value="0" 
+                             @if($user->user_auth=='0')
                              checked
                              @endif
-                             >启用</label>
-                            <label for=""><input type="radio" name="user_status" value="0" 
-                            @if($user->user_status=='0')
-                             checked
-                             @endif
-                             >禁用</label>
-                        </td>
-          </tr> 
-<!-- 默认使用最低的权限 -->
-          <tr>
-            <th class="text-r"><span class="c-red">*</span> 权限：</th>
-            <td>
-                            <label for=""><input type="radio" name="user_auth" value="2" 
-                            @if($user->user_auth=='2')
-                             checked
-                             @endif
-                              >超级管理员</label>
-
+                             >青铜会员　</label>
                             <label for=""><input type="radio" name="user_auth" value="1" 
                             @if($user->user_auth=='1')
                              checked
                              @endif
-                             >高级管理员</label>
-                             
-                            <label for=""><input type="radio" name="user_auth" value="0" 
-                            @if($user->user_auth=='0')
+                             >白银会员　</label>
+
+                             <label for=""><input type="radio" name="user_auth" value="2" 
+                            @if($user->user_auth=='2')
                              checked
                              @endif
-                             >普通管理员</label>
+                             >黄金会员　</label>
+                             <label for=""><input type="radio" name="user_status" value="3" 
+                            @if($user->user_auth=='3')
+                             checked
+                             @endif
+                             >铂金会员　</label>
+
+                             <label for=""><input type="radio" name="user_auth" value="4" 
+                            @if($user->user_auth=='4')
+                             checked
+                             @endif
+                             >钻石会员　</label>
+                             <label for=""><input type="radio" name="user_auth" value="5" 
+                            @if($user->user_auth=='5')
+                             checked
+                             @endif
+                             >星耀会员　</label>
                         </td>
           </tr> 
+           <!-- 状态默认为启用0 -->
+          <tr>
+            <th class="text-r"><span class="c-red">*</span> 状态：</th>
+            <td><label>
+                <input name="user_status" type="radio" id="six_1" value="1"    @if($user->user_status=='1')
+                             checked
+                             @endif>
+                启用</label>
+              <label>
+                <input type="radio" name="user_status" value="0" id="six_0" 
+                @if($user->user_status=='0')
+                             checked
+                             @endif>
+                禁用</label></td>
+          </tr> 
+<!-- 默认使用最低的权限 -->
+        
         <tr>
           <th></th>
            {{csrf_field()}}

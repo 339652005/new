@@ -89,8 +89,8 @@
     </thead>
     <tbody>
     <?php 
-    $auth=['普通管理员','高级管理员','超级管理员'];
-     $status=['禁用','启用'];
+    $auth=['青铜会员','白银会员','黄金会员','铂金会员','钻石会员','星耀会员'];
+    $status=['禁用','启用'];
     ?>
 
     
@@ -115,8 +115,18 @@
         <td>{{$v->user_tell}}</td>
         
         <td>{{ $auth[$v->user_auth]}}</td>
+
+         @if($v->user_status==0)
+                <td>
+                <a  class="ml-5" onClick="changeStatus({{$v->user_id}})" href="javascript:;" title="修改状态"><span class="btn btn-danger radius">{{ $status[$v->user_status]}}</span></a> 
+                </td>
+            @else
+                <td>
+                <a  class="ml-5" onClick="changeStatus({{$v->user_id}})" href="javascript:;" title="修改状态"><span class="btn btn-success radius">{{ $status[$v->user_status]}}</span></a>
+                </td>
+            @endif
         
-        <td class="user-status"><span class="label label-success">{{ $status[$v->user_status]}}</span></td>
+        <!-- <td class="user-status"><span class="label label-success">{{-- $status[$v->user_status]--}}</span></td> -->
         
         <td class="f-14 user-manage">
 
@@ -159,10 +169,10 @@
 
                     if(data.status == 0){
                         location.href = location.href;
-                        layer.msg(data.msg, {icon: 6});
+                        layer.msg(data.msg, {icon: 6,time:4000});
                     }else{
                         location.href = location.href;
-                        layer.msg(data.msg, {icon: 5});
+                        layer.msg(data.msg, {icon: 5,time:4000});
                     }
 
 
@@ -172,6 +182,34 @@
             });
         }
 
+/*2.to show()修改状态*/
+    function changeStatus(id){
+        layer.confirm('确认要修改状态吗？',function(index){
+            $.ajax({
+                type: 'GET',
+                // to show 
+                url: 'user/'+id,
+                dataType: 'json',
+                success: function(data){
+                    // 定时刷新
+                    layer.msg(data.msg,{icon:1,time:1000});
+                    setInterval(function(){
+                        location.href = location.href;
+                    // layer.msg(data.msg, {icon: 1,time:3000});
+                    }, 1000);
+                },
+                error:function(data) {
+                    // 定时刷新
+                     layer.msg(data.msg,{icon:2,time:1000});
+                    setInterval(function(){
+                        location.href = location.href;
+                        // layer.msg(data.msg,{icon:2,time:3000});
+                    }, 1000);
+                    
+                },
+            });     
+        });
+    }
     </script>
     </tbody>
 <script>

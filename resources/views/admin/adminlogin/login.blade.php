@@ -29,19 +29,7 @@
   <div id="loginform" class="loginBox">
     <form class="form form-horizontal" action="{{url('admin/dologin')}}" method="post">
 
-    @if (count($errors) > 0)
-        <div class="alert alert-danger">
-          <ul>
-            @if(is_object($errors))
-                @foreach ($errors->all() as $error)
-                  <li>{{ $error }}</li>
-                @endforeach
-            @else
-                      <li>{{ $errors }}</li>
-            @endif
-          </ul>
-        </div>
-      @endif
+    
       {{ csrf_field() }}
 
       <div class="row cl">
@@ -64,8 +52,21 @@
       <div class="row cl">
         <div class="formControls col-xs-8 col-xs-offset-3">
           <label for="online">
-            <input type="checkbox" name="online" id="online" value="">
-            使我保持登录状态</label>
+            <!-- <input type="checkbox" name="online" id="online" value="">
+            使我保持登录状态</label> -->
+            @if (count($errors) > 0)
+        <div class="alert alert-danger input-text size-L" style="color:red;">
+          <ul>
+            @if(is_object($errors))
+                @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+            @else
+                  <li>{{ $errors }}</li>
+            @endif
+          </ul>
+        </div>
+      @endif
         </div>
       </div>
       <div class="row cl">

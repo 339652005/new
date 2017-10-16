@@ -1,10 +1,12 @@
 <?php
-// 命名空间加 \Admin 
 namespace App\Http\Controllers\Seller;
 
 use Illuminate\Http\Request;
  
 use App\Http\Requests;
+use App\Http\Model\Sellers;
+use App\Http\Model\Shop;
+
 // Controller.php所在命名空间
 use App\Http\Controllers\Controller;
 // 使用验证码的命名空间
@@ -51,89 +53,107 @@ class LoginController extends Controller
     
     public function dologin(Request $request)
     {
-         // return app_path();   //测试
-        // 1.接受数据
+        // 互殴数据
         $input = Input::except('_token');
-        
+        // 验证表单
         $rule=[
-            'seller_name'=>'required|between:1,12',  // 规则:非空 位数
-            'seller_pwd'=>'required|between:1,12',
+            'seller_name'=>'required|between:4,12',  
+            'seller_pwd'=>'required|between:4,12',
         ];
         $msg = [
             'seller_name.required'=>'用户名为空',  // 错误返回信息
-            'seller_name.between'=>'用户名为4-18位',
+            'seller_name.between'=>'用户名为4-12位',
             'seller_pwd.required'=>'密码为空入',
-            'seller_pwd.between'=>'密码为4-18位'
+            'seller_pwd.between'=>'密码为4-12位'
         ];
-        
         $validator = Validator::make($input,$rule,$msg);
-        //  如果验证失败(返回)验证通过(继续逻辑验证)
         if ($validator->fails()) {
             return redirect('seller/login')  // 跳转
-                ->withErrors($validator)    // 返回错误
-                ->withInput();              //数据闪存
+                ->withErrors($validator)     // 返回错误
+                ->withInput();               //数据闪存
         }
-      
+        
+        // 逻辑判断
         if($input['code'] != session('code')){
             return redirect('seller/login')->with('errors','验证码错误')->withInput();
         }
-        
-        // 自定义的Model Manager
+
+        // 检测该登录用户是否存在
         $seller = Seller::where('seller_name','=',$input['seller_name'])->first();
-         // dd(session('code'));
-        if(!$seller){
-            return redirect('seller/login')->with('errors','此用户不存在')->withInput();
-        }
-        
-        if( Hash::check($input['seller_pwd'],$seller->seller_pwd) ){
-             return redirect('seller/login')->with('errors','密码错误')->withInput();
-        }
-       // 通过  数据信息存入 session  用户名唯一 
-       // $sellerInfo = DB::table('dc_seller')->where('seller_name',$input['seller_name'])->first();
+            if(!$seller){
+                return redirect('seller/login')->with('errors','此用户不存在')->withInput();
+            }
 
-    // 数据信息存入 session $seller_id 清楚其他的下线
-    // $request->session()->flush();
-    $seller_id =  $seller->seller_id;
-    $request->session()->push('seller_id', $seller_id);
-    // print_r( $request->session()->all());
-    // 获取测试
-    // $data = $request->session()->all();
-    // $data = $request->session()->get('seller_id');
-    // dd($data[0]);
-       // return redirect('seller/index');     
-    return redirect('seller/index',compact('seller_id'));     
+        // 存在检验密码
+        // if( Hash::check($input['seller_pwd'],$seller->seller_pwd) ){
+        //      return redirect('seller/login')->with('errors','密码错误')->withInput();
+        // }
+
+        // 密码是否正确
+        if(Crypt::decrypt($seller->seller_pwd) !=  $input['seller_pwd']){
+            return redirect('seller/login')->with('errors','密码错误')->withInput();
+        }
+      
+        // 检测是否被官方禁止登陆
+        if ($seller->seller_status==0) {
+           return redirect('seller/login')->with('errors','账号锁定,禁止登陆')->withInput();
+        }
+
+        // 数据信息存入 session $seller_id 清楚其他的下线
+        // $request->session()->flush();
+        $seller_id =  $seller->seller_id;
+        // $request->session()->forget('seller_id');
+        $request->session()->push('seller_id', $seller_id);
+        // 获取测试
+        $data = $request->session()->all();
+        // $data = $request->session()->get('seller_id');
+        // print_r($data);  //dd阻止session写入
+        return redirect("seller/index");  
     }
 
-    public function index( )
+    // 显示首页 框架导航
+    public function index( Request $request)
     {
-        return view('seller.sellerlogin.index');
+        $seller_id = $request->session()->get('seller_id')[0];
+        // dd( $seller_id);
+        $self = Sellers::find($seller_id);
+        $selfShop = Shop::where('seller_id',$seller_id)->first();
+        // dd($self->seller_name);
 
+        return view('seller.sellerlogin.index',compact('self','selfShop'));
     }
 
-    public function welcome()
+    // 显示欢迎页 内嵌ifram界面
+    public function welcome(Request $request)
     {
-       //dd($_SERVER);
+        // dd($_SERVER);
         return view('seller.sellerlogin.welcome');
     }
 
-    public function quit()
+    // 退出登陆 销毁session
+    public function loginout()
     {
-        session()->flush();
-
-//        或者
-//        session(['user'=>null]);
-
+        return 'loginout';
+        $request->session()->forget('seller_id');
+        // 或者 session(['seller_id'=>null]);
         return redirect('seller/login');
-   }
+    }
 
+    // 个人信息
+    public function myselfinfo()
+    {
+        return 'myselfinfo';
+        $request->session()->forget('seller_id');
+        // 或者 session(['seller_id'=>null]);
+        return redirect('seller/login');
+    }
+
+    // 登陆界面验证码
     public function yzm( )
     {
         $code = new Code();
         $code->make();
     }
-
-    
-
 
 
 }  //this is end of the loginController

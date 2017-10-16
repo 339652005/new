@@ -9,7 +9,7 @@
 [if lt IE 9]>
 <script type="text/javascript" src="lib/html5shiv.js"></script>
 <script type="text/javascript" src="lib/respond.min.js"></script>
-<![endif]
+<![endif] 
 <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
 <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
 <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
@@ -96,9 +96,17 @@
         <td>{{$v->seller_email}}</td>
         <td>{{$v->seller_tell}}</td>
         
+             @if($v->seller_status==0)
+                <td>
+                <a  class="ml-5" onClick="changeStatus({{$v->seller_id}})" href="javascript:;" title="修改状态"><span class="btn btn-danger radius">{{ $status[$v->seller_status]}}</span></a> 
+                </td>
+            @else
+                <td>
+                <a  class="ml-5" onClick="changeStatus({{$v->seller_id}})" href="javascript:;" title="修改状态"><span class="btn btn-success radius">{{ $status[$v->seller_status]}}</span></a>
+                </td>
+            @endif
         
-        
-        <td class="user-status"><span class="label label-success">{{ $status[$v->seller_status]}}</span></td>
+       <!--  <td class="user-status"><span class="label label-success">{{-- $status[$v->seller_status]--}}</span></td> -->
         
         <td class="f-14 user-manage">
 
@@ -153,7 +161,34 @@
 
             });
         }
-
+/*2.to show()修改状态*/
+    function changeStatus(id){
+        layer.confirm('确认要修改状态吗？',function(index){
+            $.ajax({
+                type: 'GET',
+                // to show 
+                url: 'seller/'+id,
+                dataType: 'json',
+                success: function(data){
+                    // 定时刷新
+                    layer.msg(data.msg,{icon:1,time:1000});
+                    setInterval(function(){
+                        location.href = location.href;
+                    // layer.msg(data.msg, {icon: 1,time:3000});
+                    }, 1000);
+                },
+                error:function(data) {
+                    // 定时刷新
+                     layer.msg(data.msg,{icon:2,time:1000});
+                    setInterval(function(){
+                        location.href = location.href;
+                        // layer.msg(data.msg,{icon:2,time:3000});
+                    }, 1000);
+                    
+                },
+            });     
+        });
+    }
     </script>
     </tbody>
 <script>

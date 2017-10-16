@@ -56,7 +56,7 @@
         <!-- <th width="25"><input type="checkbox" name="" value=""></th> -->
         <th width="40">ID</th>
         <th width="60">套餐名陈</th>
-        <th width="40">套餐价格</th>
+        <!-- <th width="40">套餐价格</th> -->
         <th width="80">操作</th>
       </tr>
     </thead>
@@ -70,14 +70,14 @@
         <td><u style="cursor:pointer" class="text-primary" onclick="user_show('10001','360','','张三','user-show.html')">{{$v->taocan_name}}</u></td>
         
         
-        <td>{{$v->taocan_price}}</td>
+        <!-- <td>{{--$v->taocan_price--}}</td> -->
         
         
         <td class="f-14 user-manage">
 
        
 
-         <a title="编辑" href="{{url('seller/taocan/'.$v->taocan_id.'/edit')}}" onclick="user_edit('4','550','','编辑','user-add.html')" class="ml-5" style="text-decoration:none"><span class="label label-success">编辑</span><i class="icon-edit"></i></a> 
+         <a title="编辑" href="{{url('seller/taocan/'.$v->taocan_id.'/edit')}}" onclick="user_edit('4','550','','编辑','user-add.html')" class="ml-5" style="text-decoration:none"><span class="label label-success">编辑</span><i class="icon-edit"></i></a>　　 
          
           <a href="javascript:;" onclick="delUser({{$v->taocan_id}})"><span class="label label-success">删除</span></a>
         </td>

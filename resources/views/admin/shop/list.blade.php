@@ -94,6 +94,7 @@
     $status=['开店审核','正在营业','休息时间','店铺关闭'];
     ?>
  @foreach($shop as $k=>$v)
+
       <tr class="text-c">
     
         <td>{{$v->shop_id}} 111</td>

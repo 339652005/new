@@ -25,6 +25,20 @@
 <div class="pd-20">
   <form class="Huiform" action="{{url('admin/manager/'.$manager->manager_id)}}" method="post">
     <table class="table">
+    @if (count($errors) > 0)
+            <div class="alert alert-danger input-text size-L" style="color:red;">
+            <ul>
+                @if(is_object($errors))
+                    @foreach ($errors->all() as $error)
+                      <li>{{ print_r($error) }}</li>
+
+                    @endforeach
+                @else
+                      <li>{{ $errors }}</li>
+                @endif
+            </ul>
+            </div>
+        @endif
       <tbody>
         <tr>
           <th width="100" class="text-r"><span class="c-red">*</span> 用户名：</th>
@@ -115,7 +129,9 @@
           <th></th>
            {{csrf_field()}}
             <input type="hidden" name="_method" value="put">
-          <td><button class="btn btn-success radius" type="submit"><i class="icon-ok"></i> 确定</button></td>
+
+          <td><button  class="btn btn-success radius" type="submit"><i class="icon-ok"></i> 确定修改</button>　　　<button id="closeIframe" class="btn btn-success radius" type="button"><i class="icon-ok"></i> 返回</button></td>
+         
         </tr>
       </tbody>
     </table>
@@ -125,6 +141,19 @@
 <script type="text/javascript" src="js/H-ui.js"></script> 
 <script type="text/javascript" src="js/H-ui.admin.js"></script>
 <script>
+// 关闭弹层
+var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+// alert($);
+//关闭iframe
+$('#closeIframe').click(function(){
+    var val = $('#name').val();
+    parent.layer.msg('成功返回');
+    parent.layer.close(index);
+});
+
+
+
+
 var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");

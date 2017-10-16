@@ -57,7 +57,7 @@ class taocanController extends Controller
            $taocan = new taocan();
            $taocan->taocan_name = $input['taocan_name'];
            $taocan->seller_id = $seller_id;      //所属商家
-           $taocan->taocan_price = $input['taocan_price'];
+           // $taocan->taocan_price = $input['taocan_price'];
            // $taocan->taocan_desc = $input['taocan_desc'];
            // $taocan->taocan_status = $input['taocan_status'];
            // $taocan->taocan_piture = $input['taocan_piture'];
@@ -96,7 +96,7 @@ class taocanController extends Controller
 
           $taocan->taocan_name = $input['taocan_name'];
           $taocan->seller_id = $seller_id;   
-          $taocan->taocan_price = $input['taocan_price'];
+          // $taocan->taocan_price = $input['taocan_price'];
           // dd($taocan);
           $re = $taocan->save();   //save()保存数据   ?? 猪
 //        3 判断执行是否成功

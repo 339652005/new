@@ -39,12 +39,12 @@
             <th width="100" class="text-r"><span class="c-red">*</span> 套餐名称：</th>
             <td><input type="text" style="width:200px" class="input-text" value="{{ $taocan ->taocan_name }}" placeholder="请输入用户名" id="user-name" name="taocan_name" datatype="*2-16" nullmsg="分类名不能为空"></td>
           </tr>
-
+<!-- 
           <tr>
             <th width="100" class="text-r"><span class="c-red">*</span> 套餐价格：</th>
-            <td>￥ <input type="text" style="width:200px" class="input-text" value="{{ $taocan ->taocan_price }}" placeholder="请输入用户名" id="user-name" name="taocan_price" datatype="*2-16" nullmsg="分类名不能为空"> 元</td>
+            <td>￥ <input type="text" style="width:200px" class="input-text" value="{{-- $taocan ->taocan_price --}}" placeholder="请输入用户名" id="user-name" name="taocan_price" datatype="*2-16" nullmsg="分类名不能为空"> 元</td>
           </tr>    
-          
+           -->
 
            
         <tr>
