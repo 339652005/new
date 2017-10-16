@@ -102,6 +102,8 @@ class LoginController extends Controller
         // 数据信息存入 session $seller_id 清楚其他的下线
         // $request->session()->flush();
         $seller_id =  $seller->seller_id;
+        // $seller_id =  2;
+
         // $request->session()->forget('seller_id');
         $request->session()->push('seller_id', $seller_id);
         // 获取测试
@@ -111,7 +113,7 @@ class LoginController extends Controller
         return redirect("seller/index");  
     }
 
-    // 显示首页 框架导航
+    // 显示首页 框架导航 店主信息传递
     public function index( Request $request)
     {
         $seller_id = $request->session()->get('seller_id')[0];
@@ -140,11 +142,19 @@ class LoginController extends Controller
     }
 
     // 个人信息
-    public function myselfinfo()
+    public function selfinfo()
+    {
+        // return 'myselfinfo';
+        // 获取session 里的id
+
+        return redirect('seller/login');
+    }
+
+    // 店铺信息
+    public function shopinfo()
     {
         return 'myselfinfo';
-        $request->session()->forget('seller_id');
-        // 或者 session(['seller_id'=>null]);
+       
         return redirect('seller/login');
     }
 

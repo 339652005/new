@@ -109,6 +109,17 @@ class LoginController extends Controller
         return view('admin.adminlogin.index');
     }
 
+    /* 注册 */ 
+    public function reg( )
+    {
+// 1.当前用户
+      // $data = $request->session()->get('manager_id');
+      // $self_id = $data[0];
+      // $self = Manager::where('manager_id',$self_id)->first();
+     
+      return view('admin.adminlogin.reg');
+    }
+
     /*首页*/
     public function welcome()
     {

@@ -25,6 +25,8 @@ Route::get('/', function () {
 /*主后台控制路由*/
 // 1.登录 退出 改密码
 Route::get('admin/login','Admin\LoginController@login');
+Route::get('admin/reg','Admin\LoginController@reg');
+// Route::get('reg','LoginController@reg');
 Route::post('admin/dologin','Admin\LoginController@dologin');
 Route::get('admin/yzm','Admin\LoginController@yzm');
 //通过composer安装的验证码
@@ -75,6 +77,7 @@ Route::resource('admin/type','Admin\TypeController');
 Route::group(['prefix'=>'seller','namespace'=>'Seller'],function (){
 // 分控制后台 登录 退出 改密码
 Route::get('login','LoginController@login');
+Route::get('reg','LoginController@reg');
 Route::post('dologin','LoginController@dologin');
 Route::get('yzm','LoginController@yzm');
 //通过composer安装的验证码
@@ -84,7 +87,9 @@ Route::get("index",'LoginController@index');
 Route::get('welcome','LoginController@welcome');
 // 退出的路由
 Route::get('loginout','LoginController@loginout');
-Route::get('myselfinfo/{id}','LoginController@myselfinfo');
+// 分后台 店主 店铺信息
+Route::get('selfinfo/{id}','LoginController@selfinfo');
+Route::get('shopinfo/{id}','LoginController@shopinfo');
 // 修改密码的路由
 Route::get('repass','LoginController@repass');
 
@@ -100,16 +105,17 @@ Route::resource('cart','CartController');
 // 11.订单
 Route::resource('Order','OrderController');
 
-
-
 });
+
+
+
+
+
+
 
 
 /* 前台的控制器 */
 Route::get('/','Home\IndexController@index');
-
-
-
 // ,'middleware'=>'isLogin'  中间件
 Route::group(['prefix'=>'home','namespace'=>'Home'],function (){
 // 1.显示前台首页
@@ -120,8 +126,6 @@ Route::get('show/{taocan_id}/{shop_id}','IndexController@taocanFoods');
 Route::get('index/type/{type_id}','IndexController@typeFoods');
 // 4.购物车资源理由
 // Route::resource('cart','ShopController');
-
-
 });
 //模块二 购物车相关路由  start
 // Route::resource('/home/shop', 'Home\ShopController');
@@ -144,7 +148,6 @@ Route::post('/home/jsy', 'Home\OrderController@jsy');
 Route::get('/home/finish', 'Home\OrderController@finish');
 Route::get('home/ok', 'Home\OrderController@ok');
 
-
 /*区域一  登录木块*/
 // 登录  对应视图 view/home/login  样式public/home/css
 // 引入登录界面
@@ -153,7 +156,6 @@ Route::post('home/dologin', 'Home\LoginController@dologin');
 // 注册 
 
 //修改密码
-
 /* 区域二 个人中心 */
 // 对应视图 view/home/user  样式public/home/css
 // 用户信息的显示(修改界面显示)

@@ -22,17 +22,21 @@
 
 		<nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs">
 			<ul class="cl">
+
 			@if($selfShop->shop_name)
 				<li>店铺: {{$selfShop->shop_name}}　</li>
 			@endif
+
 				<<!-- li>店主 的店铺</li> -->
 				<li class="dropDown dropDown_hover">
 					<a href="{{url('seller/shopinfo/$selfShop->shop_id')}}" class="dropDown_A">店主: {{$self->seller_name}} <i class="Hui-iconfont">&#xe6d5;</i></a>
+					
 					<ul class="dropDown-menu menu radius box-shadow">
-						<li><a href="{{url('seller/$self->seller_id')}}" >个人信息</a></li>
-						<li><a href="javascript:;" >　　</a></li>
+						<li><a href="{{url('seller/selfinfo/$self->seller_id')}}" >个人信息</a></li>
+						<li><a href="{{url('seller/shopinfo/$self->seller_id')}}" >店铺信息</a></li>
 						<li><a href="{{url('seller/quite')}}">退出</a></li>
 				</ul>
+
 			</li>
 	<script type="text/javascript">
 		
