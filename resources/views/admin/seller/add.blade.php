@@ -1,6 +1,6 @@
 
 @extends('layouts.admin')
-@section('content')
+@section('content') 
   
 <!-- </head> -->
 <body>
@@ -51,10 +51,10 @@
             <th class="text-r"><span class="c-red">*</span> 状态：</th>
             <td><label>
                 <input name="seller_status" type="radio" id="six_1" value="0" checked>
-                启用</label> 
-              <label>
+                禁用</label> 
+             <!--  <label>
                 <input type="radio" name="seller_status" value="1" id="six_0">
-                禁用</label></td>
+                启用</label></td> -->
           </tr> 
 <!-- 默认使用最低的权限 -->
          
@@ -62,7 +62,7 @@
             <th></th>
             <td>
              {{csrf_field()}}
-            <button class="btn btn-success radius" type="submit"><i class="icon-ok"></i> 提交</button>
+            <button class="btn btn-success radius" type="submit"><i class="icon-ok"></i> 添加店铺</button>
             
             <button class="btn btn-success radius" type="button" onclick="history.go(-1)"><i class="icon-ok"></i> 返回
             </button>

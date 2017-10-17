@@ -149,10 +149,10 @@ class ManagerController extends Controller
         ];
         $msg = [
             // 常用
-            // 'manager_name.required'=>'请输入用户名',  // 错误返回信息
+            'manager_name.required'=>'请输入用户名',  // 错误返回信息
             // 'manager_pwd.required'=>'请输入密码',
             // 'manager_repwd.required'=>'请输入密码',
-            // 'manager_name.regex'=>'请输入4-12位数字,字母,下划线',
+            'manager_name.regex'=>'请输入4-12位数字,字母,下划线',
             // 'manager_pwd.regex'=>'请输入4-12位数字,字母,下划线',
             // 'manager_pwd.same'=>'您两次输入的密码不一致',
             // 邮箱 电话
@@ -171,8 +171,8 @@ class ManagerController extends Controller
                 ->withErrors($validator)             // 返回错误
                 ->withInput();                       //数据闪存
         }
-          $type = manager::find($id);
-           // $manager->manager_name = $input['manager_name'];
+          $manager = manager::find($id);
+           $manager->manager_name = $input['manager_name'];
            $manager->manager_tell = $input['manager_tell'];
            $manager->manager_email = $input['manager_email'];
            $manager->manager_status = $input['manager_status'];

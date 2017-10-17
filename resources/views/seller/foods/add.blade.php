@@ -55,12 +55,17 @@
                      <tr>
                         <th>菜品所属套餐：</th>
                             <td>
+                                
+                            @if(!empty($taocan))   
                                 <select style="width:150px;" name="foods_taocan" id="catid" class="required">
-                               
                                 @foreach($taocan as $v)    
                                     <option value="{{ $v->taocan_id }}">　｜－－{{ $v->taocan_name }}</option>
-                                @endforeach  
-                                </select>
+                                @endforeach 
+                                 </select>
+                            @else
+                            <span>无可选套餐,清闲添加套餐</span>
+                            @endif
+                               
                             </td>
                     </tr>
                     
@@ -107,7 +112,9 @@
                         <th></th>
                         <td>
                         {{csrf_field()}}
+                         @if(!empty($taocan))  
                             <input type="submit" value="提交">
+                         @endif 
                             <input type="button" class="back" onclick="history.go(-1)" value="返回">
                         </td>
                     </tr>

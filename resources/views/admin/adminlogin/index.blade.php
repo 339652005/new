@@ -1,5 +1,5 @@
 ﻿@extends('layouts.admin')
-@section('content')
+@section('content') 
 <body>
 <header class="navbar-wrapper">
 	<div class="navbar navbar-fixed-top">
@@ -23,14 +23,15 @@
 		</nav>
 		<nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs">
 			<ul class="cl">
-				<li>超级管理员</li>
-				<li class="dropDown dropDown_hover">
+				<li><a href="{{url('admin/loginout')}}">退出</a></li>
+
+				<!-- <li class="dropDown dropDown_hover">
 					<a href="#" class="dropDown_A">admin <i class="Hui-iconfont">&#xe6d5;</i></a>
 					<ul class="dropDown-menu menu radius box-shadow">
 						<li><a href="javascript:;" onClick="myselfinfo()">个人信息</a></li>
 						<li><a href="#">切换账户</a></li>
 						<li><a href="#">退出</a></li>
-				</ul>
+				</ul> -->
 			</li>
 				<li id="Hui-msg"> <a href="#" title="消息"><span class="badge badge-danger">1</span><i class="Hui-iconfont" style="font-size:18px">&#xe68a;</i></a> </li>
 				<li id="Hui-skin" class="dropDown right dropDown_hover"> <a href="javascript:;" class="dropDown_A" title="换肤"><i class="Hui-iconfont" style="font-size:18px">&#xe62a;</i></a>
@@ -84,7 +85,7 @@ data-title="添加管理员"    //标题
 			<dt><i class="Hui-iconfont">&#xe620;</i> 商家管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
-					<li><a data-href="{{url('admin/seller/create')}}" data-title="添加商家" href="javascript:;">添加商家</a></li>
+					<!-- <li><a data-href="{{--url('admin/seller/create')--}}" data-title="添加商家" href="javascript:;">添加商家</a></li> -->
 					
 					<li><a data-href="{{url('admin/seller')}}" data-title="商家列表" href="javascript:;">商家列表</a></li>
 					
@@ -95,7 +96,7 @@ data-title="添加管理员"    //标题
 			<dt><i class="Hui-iconfont">&#xe622;</i> 店铺管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
-					<li><a data-href="{{url('admin/shop/create')}}" data-title="添加店铺" href="javascript:;">添加店铺</a></li>
+					<!-- <li><a data-href="{{--url('admin/shop/create')--}}" data-title="添加店铺" href="javascript:;">添加店铺</a></li> -->
 					<li><a data-href="{{url('admin/shop')}}" data-title="店铺列表" href="javascript:;">店铺列表</a></li>
 
 					<li><a data-href="{{url('admin/type')}}" data-title="类型列表" href="javascript:;">类型列表</a></li>

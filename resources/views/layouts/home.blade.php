@@ -78,9 +78,13 @@
                     <div id="appMsgBox" class="rel zx1"></div>
                 </li>
             	<li class="nav_first"></li> 
+
                     <li class="nav_on"><div class="nav_in"><a href="{{url('home/index')}}" class="nav_bg">首页</a></div></li>
+
                     <li class="nav_off"><div class="nav_in"><a href="{{url('/cart')}}" class="nav_bg">我的购物车</a></div></li>
                     
+                    <li class="nav_off"><div class="nav_in"><a href="{{url('/home/detail')}}" class="nav_bg">我的订单</a></div></li>
+
                     <li class="nav_off "><div class="nav_in"><a href="{{url('home/userinfo')}}" class="nav_bg" target="_blank">个人中心</a></div></li> 
                             
                 <li class="nav_last"></li>                

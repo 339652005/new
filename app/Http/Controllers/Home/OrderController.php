@@ -43,6 +43,11 @@ $request->session()->put('user_id','70');  //登录用户id 伪造
        public function jsy(Request $request)
         {
             // dd(111);
+            //处理session销毁过后,用户再刷新 
+            // if (!$request->session()->has('order_id')) {
+            //     // 回首页
+            //     return redirect('/home/index');
+            // }
             $input = $request->except('_token');
            $order = new Order();
            
@@ -87,11 +92,7 @@ $request->session()->put('user_id','70');  //登录用户id 伪造
         // 最终结账
         public  function finish(Request $request)
         {
-            //处理session销毁过后,用户再刷新 
-            if (!$request->session()->has('order_id')) {
-                // 回首页
-                return redirect('/home/index');
-            }
+           
 
             // 开启事务
             DB::beginTransaction();
@@ -113,16 +114,15 @@ $request->session()->put('user_id','70');  //登录用户id 伪造
         // 1.修改库存和销量 $v->qty 单间数量 statement执行sql语句 
         private function updateStock()
         {
-            //购物车所有信息
             $carts = Cart::content();
             foreach( $carts as $k=>$v){  // dd($v->id); // foods_id
                 $sql = "update dc_foods set foods_sales=foods_sales+{$v->qty} where foods_id={$v->id}";
                 if(!DB::statement($sql)){
-                   return false;  // 修改库存失败
-                   die();         // 结束代码执行
+                   return false;  
+                   die();         
                 } 
             }   
-            return true;          // 修改库存成功
+            return true;    // 修改销量
         }
         
         
@@ -136,7 +136,15 @@ $request->session()->put('user_id','70');  //登录用户id 伪造
              取出session数据       
              dd( $request->session()->all());
              */
-
+            // $carts = Cart::content();
+            // // 新数组
+            // $arrShop=[];
+            // foreach( $carts as $k=>$v){ 
+            //     $arrShop[]=$v->options->shop->shop_id;
+            // }
+            // foreach ($arrShop as $key => $value) {
+            //     $data['shop_id'] = $value;
+            // }
             // 定义session里的订单号
             session(['order_id' => date('YmdHis').uniqid()]);
             $this -> oid =  session('order_id');
@@ -150,7 +158,7 @@ $request->session()->put('user_id','70');  //登录用户id 伪造
             $data['order_total'] = $request->session()->get('order_total');  
             $data['order_count'] = $request->session()->get('order_count');  
             $data['user_id'] = session('user_id');  //登录用户
-            //$data['foods_id'] = $request->session()->get('foods_id');  
+            $data['order_time'] = time();  
             //食品id 暂时获取不到 oeder_id关联
  
              /*echo date('YmdHis').uniqid() ;  //生成基于微妙计数的精确唯一id        
@@ -173,12 +181,13 @@ $request->session()->put('user_id','70');  //登录用户id 伪造
         private function writeDetail()
         {
             //  拼成一条SQL语句 bprice,bcnt 单价 单品数量
-            $sql = "insert into dc_detail(order_id,foods_id,bprice,bcnt,foods_name,order_status,shop_name,shop_logo) values";
+            $sql = "insert into dc_detail(order_id,foods_id,bprice,bcnt,foods_name,order_status,shop_name,shop_logo,shop_id) values";
             // 购物车所有信息
             $carts = Cart::content();
             foreach( $carts as $k=>$cart){ 
                 $shop_name =  $cart->options->shop->shop_name;      //店铺名
                 $shop_logo = $cart->options->shop->shop_logo;       //店铺logo/
+                $shop_id = $cart->options->shop->shop_id;       //店铺logo/
                 // dd($cart->id);  // dd($cart->id); => foods_id        食品id(不显示)
                 // dd($cart->qty);  // dd($cart->qty); => bcnt          单数
                 $foods_picture = $cart->options->piture;  //        食品图片
@@ -186,16 +195,12 @@ $request->session()->put('user_id','70');  //登录用户id 伪造
                 // dd($cart->name);  // dd($cart->name); => foods_name  食品名称
                 // order_status =>0 送货中
                 // 食品图片  店家名称 店家logo   订单状态
-                 $sql .= "('{$this->oid}',{$cart->id},{$cart->price},{$cart->qty},'{$cart->name}','0','{$shop_name}','{$shop_logo}'),";
+                 $sql .= "('{$this->oid}',{$cart->id},{$cart->price},{$cart->qty},'{$cart->name}','0','{$shop_name}','{$shop_logo}',{$shop_id}),";
             }  
             $sql = rtrim($sql,',');
             // dd( $sql);
             
-            if(!DB::statement($sql)){
-                   return false;  // 修改库存失败
-                   die();         // 结束代码执行
-            } 
-
+          
             if ( DB::statement($sql) ) {
                 // echo "成功";
                 return true;   // 写详情表成功
@@ -230,40 +235,6 @@ $request->session()->put('user_id','70');  //登录用户id 伪造
         }
 
 
-        //详情
-        function ordersinfo()
-            {
-                require('./view/goods/showorders.html');
-                
-            }
-        function showorders()
-        {
-            //通过 用户 ID 查出 订单 OID
-            $orders = DB::Table('orders') -> select(" where uid={$_SESSION['userInfo'] -> uid} ");
-            
-            
-            require('./view/orders/showorders.html');
-        }
-            function delorders()
-         {
-            $oid = $_GET['oid'];
-            // echo $oid;
-            // $res = DB::Table('orders') -> select(" where oid='{$oid}'");
-            // echo '<pre>';
-            // print_r($res);
-            
-            $flag = DB::Table('orders') -> delete(" '{$oid}'");
-            
-            if( $flag ){
-                echo '订单取消成功';
-                header('refresh:2;url=./index.php?c=orders&a=showorders');die;
-            }else{
-                echo '订单取消失败';
-                header('refresh:2;url=./index.php?c=orders&a=showorders');die;
-            }
-            
-            
-         }
-        
+       
     }
    

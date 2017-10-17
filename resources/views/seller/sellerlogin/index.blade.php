@@ -1,7 +1,7 @@
 ﻿@extends('layouts.admin')
-@section('content')
+@section('content') 
 <body>
-<header class="navbar-wrapper">
+<header class="navbar-wrapper"> 
 	<div class="navbar navbar-fixed-top">
 		<div class="container-fluid cl"> <a class="logo navbar-logo f-l mr-10 hidden-xs" href="/aboutHui.shtml">H-ui.admin</a> <a class="logo navbar-logo-m f-l mr-10 visible-xs" href="/aboutHui.shtml">H-ui</a> 
 			<span class="logo navbar-slogan f-l mr-10 hidden-xs">v3.1</span> 
@@ -11,10 +11,7 @@
 				<ul class="cl">
 					<li class="dropDown dropDown_hover"><a href="javascript:;" class="dropDown_A"><i class="Hui-iconfont">&#xe600;</i> 新增 <i class="Hui-iconfont">&#xe6d5;</i></a>
 						<ul class="dropDown-menu menu radius box-shadow">
-							<!-- <li><a href="javascript:;" onclick="article_add('添加资讯','article-add.html')"><i class="Hui-iconfont">&#xe616;</i> 资讯</a></li>
-							<li><a href="javascript:;" onclick="picture_add('添加资讯','picture-add.html')"><i class="Hui-iconfont">&#xe613;</i> 图片</a></li>
-							<li><a href="javascript:;" onclick="product_add('添加资讯','product-add.html')"><i class="Hui-iconfont">&#xe620;</i> 产品</a></li>
-							<li><a href="javascript:;" onclick="member_add('添加用户','member-add.html','','510')"><i class="Hui-iconfont">&#xe60d;</i> 用户</a></li> -->
+							
 					</ul>
 				</li>
 			</ul>
@@ -23,21 +20,19 @@
 		<nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs">
 			<ul class="cl">
 
-			@if($selfShop->shop_name)
-				<li>店铺: {{$selfShop->shop_name}}　</li>
-			@endif
-
+			@if(!empty($selfShop && $self))
+				<li><a href="javascript:;" class="dropDown_A">店铺: {{$selfShop->shop_name}}</li>
 				<<!-- li>店主 的店铺</li> -->
 				<li class="dropDown dropDown_hover">
-					<a href="{{url('seller/shopinfo/$selfShop->shop_id')}}" class="dropDown_A">店主: {{$self->seller_name}} <i class="Hui-iconfont">&#xe6d5;</i></a>
-					
-					<ul class="dropDown-menu menu radius box-shadow">
-						<li><a href="{{url('seller/selfinfo/$self->seller_id')}}" >个人信息</a></li>
-						<li><a href="{{url('seller/shopinfo/$self->seller_id')}}" >店铺信息</a></li>
-						<li><a href="{{url('seller/quite')}}">退出</a></li>
-				</ul>
+					<a href="javascript:;" class="dropDown_A">店主: 
+						 {{$self->seller_name}}　
+				</li>
+				<li class="dropDown dropDown_hover">
+					<a href="{{url('seller/loginout')}}" class="dropDown_A">退出
+				</li>
 
-			</li>
+			@endif
+
 	<script type="text/javascript">
 		
     function myselfinfo(title,url,id,w,h){
@@ -72,11 +67,37 @@
 <aside class="Hui-aside">
 	<div class="menu_dropdown bk_2">
 		
+
+
+				
 			
-	
-	
 	<dl id="menu-member">
-			<dt><i class="Hui-iconfont">&#xe60d;</i> 菜单商品<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dt><i class="Hui-iconfont">&#xe60d;</i> 信息管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+				@if(!empty($self->seller_id))
+				<li><a data-href=" {{url('seller/selfinfo/'.$self->seller_id)}}" data-title="个人信息" href="javascript:;">个人信息</a></li>
+				@endif
+
+				@if(empty($selfShop && !empty($self)))
+				<!-- 添加店铺 -->
+					<li><a data-href=" {{url('seller/addShop/'.$self->seller_id)}}" data-title="我要开店" href="javascript:;">我要开店</a></li>
+				@elseif(!empty($selfShop->seller_id && $selfShop->shop_status =='0'))
+				<!-- 显示自己店铺审核 -->
+					<li><a data-href='{{url('seller/welcome')}}' data-title="店铺审核中">店铺审核中</a></li>
+				@elseif(!empty($selfShop->seller_id && $selfShop->shop_status =='3'))
+				<!-- 显示自己店铺审核 -->
+					<li><a data-href='{{url('seller/welcome')}}' data-title="店铺以关闭">店铺以关闭</a></li>
+				@else
+					<li><a data-href="{{url('seller/shopinfo/'.$self->seller_id)}}" data-title="店铺信息" href="javascript:;">店铺信息</a></li>
+				@endif
+			</ul>
+		</dd>
+	</dl>
+<!-- 开店审核','正在营业','休息时间','店铺关闭  1 2显示 3商家已登陆不了 0不显示 -->
+@if(!empty($selfShop->seller_id ) && $selfShop->shop_status !='0' && $selfShop->shop_status !='3')
+	<dl id="menu-member">
+			<dt><i class="Hui-iconfont">&#xe60d;</i> 商品信息<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
 					<li><a data-href="{{url('seller/foods/create')}}" data-title="添加商品" href="javascript:;">添加商品</a></li>
@@ -99,33 +120,25 @@
 
 	
 	<!-- 待补充 -->
-		<dl id="menu-admin">
-			<dt><i class="Hui-iconfont">&#xe62d;</i> 购物车管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-			<dd>
-				<ul>
-					<li><a data-href="admin-role.html" data-title="角色管理" href="javascript:void(0)">角色管理</a></li>
-			</ul>
-		</dd>
-	</dl>
+		
 		<dl id="menu-tongji">
 			<dt><i class="Hui-iconfont">&#xe61a;</i> 订单及其详情<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
-					<li><a data-href="charts-7.html" data-title="3D饼状图" href="javascript:void(0)">3D饼状图</a></li>
+					<li><a data-href="{{url('seller/detail')}}" data-title="订单列表" href="javascript:void(0)">订单列表</a></li>
 			</ul>
 		</dd>
 	</dl>
 
-	<dl id="menu-tongji">
+	<!-- <dl id="menu-tongji">
 			<dt><i class="Hui-iconfont">&#xe61a;</i> 评论及回复<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
 					<li><a data-href="charts-7.html" data-title="3D饼状图" href="javascript:void(0)">3D饼状图</a></li>
 			</ul>
 		</dd>
-	</dl>
-
-	
+	</dl> -->
+@endif   <!-- 判断单行是否显示 -->	
 
 
 		

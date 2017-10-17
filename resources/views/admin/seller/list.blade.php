@@ -95,29 +95,29 @@
         <td><u style="cursor:pointer" class="text-primary" onclick="user_show('10001','360','','张三','user-show.html')">{{$v->seller_name}}</u></td>
         <td>{{$v->seller_email}}</td>
         <td>{{$v->seller_tell}}</td>
-        
-             @if($v->seller_status==0)
-                <td>
-                <a  class="ml-5" onClick="changeStatus({{$v->seller_id}})" href="javascript:;" title="修改状态"><span class="btn btn-danger radius">{{ $status[$v->seller_status]}}</span></a> 
-                </td>
+         <td>
+           <!--  <a href=""></a> -->
+                <a  class="ml-5" onClick="changeStatus({{$v->seller_id}})" href="javascript:;" title="修改状态">
+            @if($v->seller_status==0)
+                <span class="btn btn-danger radius">
             @else
-                <td>
-                <a  class="ml-5" onClick="changeStatus({{$v->seller_id}})" href="javascript:;" title="修改状态"><span class="btn btn-success radius">{{ $status[$v->seller_status]}}</span></a>
-                </td>
+                <span class="btn btn-success radius">
             @endif
-        
+                {{ $status[$v->seller_status]}}</span></a>
+            
+        </td>
        <!--  <td class="user-status"><span class="label label-success">{{-- $status[$v->seller_status]--}}</span></td> -->
         
         <td class="f-14 user-manage">
 
         <!-- <a style="text-decoration:none" onClick="user_stop(this,'10001')" href="javascript:;" title="停用"><i class="icon-hand-down"></i>停用</a> -->
 
-         <a title="编辑" href="{{url('admin/seller/'.$v->seller_id.'/edit')}}" onclick="user_edit('4','550','','编辑','user-add.html')" class="ml-5" style="text-decoration:none"><span class="label label-success">编辑</span><i class="icon-edit"></i></a> 
+         <a title="编辑" href="{{url('admin/seller/'.$v->seller_id.'/edit')}}" onclick="user_edit('4','550','','编辑','user-add.html')" class="ml-5" style="text-decoration:none"><span class="btn btn-success radius">编辑</span><i class="icon-edit"></i></a> 
          <!-- <a style="text-decoration:none" class="ml-5" onClick="user_password_edit('10001','370','228','修改密码','user-password-edit.html')" href="javascript:;" title="修改密码"><i class="icon-key"></i>修改密码</a> -->
           <!-- <a title="删除" href="javascript:;"  onclick="delUser({{--$v->user_id--}}" class="ml-5" style="text-decoration:none"><i class="icon-trash"></i>删除</a> -->
           
           <!-- <a href="javascript:;" onclick="delUser({{$v->user_id}})">删除</a> -->
-          <a href="javascript:;" onclick="delUser({{$v->seller_id}})"><span class="label label-success">删除</span></a>
+          <!-- <a href="javascript:;" onclick="delUser({{--$v->seller_id--}})"><span class="label label-success">删除</span></a> -->
         </td>
 
 
@@ -142,11 +142,8 @@
                 $.post("{{url('admin/seller/')}}/"+id,{'_method':'delete','_token':"{{csrf_token()}}"},function(data){
 //                    需要将json字符串变成json对象
                     //var data = JSON.parse(data);
-
 //                    JSON.parse(jsonstr); //可以将json字符串转换成json对象
 //                    JSON.stringify(jsonobj); //可以将json对象转换成json对符串
-
-
                     if(data.status == 0){
                         location.href = location.href;
                         layer.msg(data.msg, {icon: 6});
@@ -154,10 +151,11 @@
                         location.href = location.href;
                         layer.msg(data.msg, {icon: 5});
                     }
+                      });
 
-
-                })
-//
+                    // 删除店铺seller_id
+                   
+              
 
             });
         }

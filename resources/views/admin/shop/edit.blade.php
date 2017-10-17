@@ -93,63 +93,31 @@
         <tr>
         <th><i class="require">*</i>店铺logo：</th>
         <td>     
-         <input type="hidden" size="50" name="shop_logo_url" id="shop_logo"> 
+         <input type="hidden" size="50" name="shop_logo_url" value="{{$shop->shop_logo}}" id="shop_logo"> 
        
-            <input id="file_upload_logo" name="shop_logo" type="file" multiple="true">
-            <p><img id="img_logo" alt="上传后显示图片"  style="max-width:350px;max-height:100px;" /></p>
+         <input id="file_upload_logo" name="shop_logo" type="file" multiple="true">
+           <p><img id="img_logo" src="/{{$shop->shop_logo}}" alt="上传后显示图片"  style="max-width:350px;max-height:100px;"/></p>
         </td>
         </tr>
 
 <tr>
     <th><i class="require">*</i>营业执照：</th>
     <td>    
-    <input type="hidden" size="50" name="shop_zhizhao_url" id="shop_zhizhao">  
+    <input type="hidden" size="50" name="shop_zhizhao_url" value="{{$shop->shop_zhizhao}}" id="shop_zhizhao">  
     <input id="file_upload_zhizhao" name="shop_zhizhao" type="file"  value=''multiple="true">
-    <p><img id="img_zhizhao" alt="上传后显示图片"  style="max-width:350px;max-height:100px;" /></p>
+   <p><img id="img_zhizhao" src="/{{$shop->shop_zhizhao}}" alt="上传后显示图片"  style="max-width:350px;max-height:100px;"/></p>
 </td>
 </tr>                      
 
 <tr>
     <th><i class="require">*</i>经营许可证：</th>
 <td>      
-    <input type="hidden" size="50" name="shop_licence_url" id="shop_licence">  
+    <input type="hidden" size="50" name="shop_licence_url" value="{{$shop->shop_licence}}" id="shop_licence">  
     <input id="file_upload_licence" name="shop_licence" type="file" multiple="true">
-    <p><img id="img_licence" alt="上传后显示图片"  style="max-width:350px;max-height:100px;" /></p>
+   <p><img id="img_licence" src="/{{$shop->shop_licence}}" alt="上传后显示图片"  style="max-width:350px;max-height:100px;"/></p>
 </td>
 </tr>
-                    <tr>
-                        <th>店铺状态：</th>
-
-                     <?php 
                     
-                    $status=['开店审核','正在营业','休息时间','店铺关闭'];
-                    ?>
-                        <td>
-                            <label for=""><input type="radio" name="shop_status" value="0" 
-                            @if($shop->shop_status=='0')
-                             checked
-                            @endif
-                            
-                             >开店审核</label>
-                            <label for=""><input type="radio" name="shop_status" value="1" 
-                            @if($shop->shop_status=='1')
-                             checked
-                             @endif
-                             
-                             >正在营业</label>
-                             <label for=""><input type="radio" name="shop_status" value="2" 
-                             @if($shop->shop_status=='2')
-                             checked
-                             @endif
-                             >休息时间</label>
-                            <label for=""><input type="radio" name="shop_status" value="3" 
-                            @if($shop->shop_status=='3')
-                             checked
-                             @endif
-                             
-                             >店铺关闭</label>
-                        </td>
-                    </tr>
                    
                    
                     <tr>

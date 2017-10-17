@@ -54,26 +54,7 @@
           </tr>
           
 
-          <!-- 状态默认为启用0 -->
-          <?php 
-                   
-                    $status=['禁用','启用'];
-                    ?>
-          <tr>
-            <th class="text-r"><span class="c-red">*</span> 状态：</th>
-             <td>
-                            <label for=""><input type="radio" name="seller_status" value="1" 
-                             @if($seller->seller_status=='1')
-                             checked
-                             @endif
-                             >启用</label>
-                            <label for=""><input type="radio" name="seller_status" value="0" 
-                            @if($seller->seller_status=='0')
-                             checked
-                             @endif
-                             >禁用</label>
-                        </td>
-          </tr> 
+         
 <!-- 默认使用最低的权限 -->
           
            

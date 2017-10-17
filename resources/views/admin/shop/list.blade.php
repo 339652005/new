@@ -42,7 +42,7 @@
     </style>
 <!-- <link rel="stylesheet" href="{{-- asset('admin/css/font-awesome.min.css') --}}"> -->
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 商家中心 <span class="c-gray en">&gt;</span> 商家管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 店铺中心 <span class="c-gray en">&gt;</span> 店铺管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="pd-20">
   <!-- <div class="text-c"> 日期范围：
     <input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}'})" id="datemin" class="input-text Wdate" style="width:120px;">
@@ -82,11 +82,11 @@
         <th width="30">店铺坐标</th>
         <th width="30">店铺图片</th>
         <th width="30">店铺执照</th>
-        
         <th width="30">经营许可证</th>
         <th width="30">店铺描述</th>
         <th width="30">店铺状态</th>
-        <th width="50">操作</th>
+        <th width="30">查看店主</th>
+        <th width="50">操作(编辑可删)</th>
       </tr>
     </thead>
     <tbody>
@@ -97,7 +97,9 @@
 
       <tr class="text-c">
     
-        <td>{{$v->shop_id}} 111</td>
+        <td>{{$v->shop_id}}</td>
+        <!-- $v->seller_id
+        <td>{{$v->shop_id}}</td> -->
        
         <td><u style="cursor:pointer" class="text-primary" onclick="user_show('10001','360','','张三','user-show.html')">{{$v->shop_name}}</u>
         </td>
@@ -115,25 +117,26 @@
                        
         
         
+    @if( $v->shop_status =='0' )
+    <!-- changeStatus(id) -->
+         <td class="user-status"><a href="javascript:;" onclick="changeStatus({{$v->seller_id}})"><span class="btn btn-success radius">通过审核</span></a></td>
+    @else
+         <td class="user-status"><span class="label label-success">{{ $status[$v->shop_status] }}</span></td>
+    @endif
+       
         
-        <td class="user-status"><span class="label label-success">{{ $status[$v->shop_status] }}</span></td>
-        
+        <td class="user-status"><span class="btn btn-success radius">查看店主</span></td>
+
         <td class="f-14 user-manage">
 
 
-         <a title="编辑" href="{{url('admin/shop/'.$v->shop_id.'/edit')}}" onclick="user_edit('4','550','','编辑','user-add.html')" class="ml-5" style="text-decoration:none"><span class="label label-success">编辑</span><i class="icon-edit"></i></a> 
+         <a title="编辑" href="{{url('admin/shop/'.$v->shop_id.'/edit')}}" onclick="user_edit('4','550','','编辑','user-add.html')" class="ml-5" style="text-decoration:none"><span class="label label-success radius" >编辑</span><i class="icon-edit"></i></a> 
          <!-- <a style="text-decoration:none" class="ml-5" onClick="user_password_edit('10001','370','228','修改密码','user-password-edit.html')" href="javascript:;" title="修改密码"><i class="icon-key"></i>修改密码</a> -->
           <!-- <a title="删除" href="javascript:;"  onclick="delUser({{--$v->user_id--}}" class="ml-5" style="text-decoration:none"><i class="icon-trash"></i>删除</a> -->
           
           <!-- <a href="javascript:;" onclick="delUser({{$v->user_id}})">删除</a> -->
-          <a href="javascript:;" onclick="delUser({{$v->shop_id}})"><span class="label label-success">删除</span></a>
+          <!-- <a href="javascript:;" onclick="delUser({{--$v->shop_id--}})"><span class="label label-danger radius">删除</span></a> -->
         </td>
-
-
-        <!-- <td>
-            <a href="{{--url('admin/user/'.$v->user_id.'/edit')--}}">修改</a>
-            
-                        </td> -->
       </tr>
  @endforeach
 <script>
@@ -170,7 +173,35 @@
 
             });
         }
-
+    /*2.to show()修改状态*/
+    function changeStatus(id){
+        layer.confirm('确认要修改状态？',function(index){
+            // alert('shenhe/'+id);
+            $.ajax({
+                type: 'GET',
+                //    admin/shenhe/'.$id  去掉seller
+                url: 'shenhe/'+id,
+                dataType: 'json',
+                success: function(data){
+                    // 定时刷新
+                    layer.msg(data.msg,{icon:1,time:1000});
+                    setInterval(function(){
+                        location.href = location.href;
+                    // layer.msg(data.msg, {icon: 1,time:3000});
+                    }, 2000);
+                },
+                error:function(data) {
+                    // 定时刷新
+                     layer.msg(data.msg,{icon:2,time:1000});
+                    setInterval(function(){
+                        location.href = location.href;
+                        // layer.msg(data.msg,{icon:2,time:3000});
+                    }, 2000);
+                    
+                },
+            });     
+        });
+    }
     </script>
     </tbody>
 <script>

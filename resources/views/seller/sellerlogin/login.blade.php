@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE HTML>
-<html>
+<html> 
 <head>
 <meta charset="utf-8">
 <meta name="renderer" content="webkit|ie-comp|ie-stand">
@@ -29,19 +29,7 @@
   <div id="loginform" class="loginBox">
     <form class="form form-horizontal" action="{{url('seller/dologin')}}" method="post">
 
-    @if (count($errors) > 0)
-        <div class="alert alert-danger">
-          <ul>
-            @if(is_object($errors))
-                @foreach ($errors->all() as $error)
-                  <li>{{ $error }}</li>
-                @endforeach
-            @else
-                      <li>{{ $errors }}</li>
-            @endif
-          </ul>
-        </div>
-      @endif
+   
       {{ csrf_field() }}
 
       <div class="row cl">
@@ -61,17 +49,34 @@
           <input class="input-text size-L" type="text" placeholder="验证码" onblur="if(this.value==''){this.value='验证码:'}" onclick="if(this.value=='验证码:'){this.value='';}" name="code" value="验证码:" style="width:150px;">
          <!--  <img src=""> <a id="kanbuq" href="javascript:;"> --><img src="{{url('seller/yzm')}}" onclick="this.src='{{url('seller/yzm')}}?'+Math.random()" alt="">看不清，换一张</a> </div>
       </div>
-      <div class="row cl">
-        <div class="formControls col-xs-8 col-xs-offset-3">
-          <label for="online">
-            <input type="checkbox" name="online" id="online" value="">
-            提示: 我是商户分后台</label>
+
+       <div class="row cl">
+      <div class="formControls col-xs-8 col-xs-offset-3" style="color:red;"> 
+     
+         @if (count($errors) > 0)
+        <div class="alert alert-danger">
+          <ul>
+            @if(is_object($errors))
+                @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+            @else
+                      <li>{{ $errors }}</li>
+            @endif
+          </ul>
         </div>
+      @endif
       </div>
+      </div>
+
       <div class="row cl">
         <div class="formControls col-xs-8 col-xs-offset-3">
-          <input name="" type="submit" class="btn btn-success radius size-L" value="登录分后台">
-          <input name="" type="reset" class="btn btn-default radius size-L" value="&nbsp;取&nbsp;&nbsp;&nbsp;&nbsp;消&nbsp;">
+          <input name="" type="submit" class="btn btn-success radius size-L" value="登录分后台">　　　　　　
+           <a href="{{url('seller/reg')}}">
+           <input name="" style="width:114px;" class=" btn  labre-success  " value="&nbsp;我&nbsp;要&nbsp;去&nbsp;注&nbsp;册&nbsp;">
+           </a>
+<!-- 
+          <input name="" type="reset" class="btn btn-default radius size-L" value="&nbsp;取&nbsp;&nbsp;&nbsp;&nbsp;消&nbsp;"> -->
         </div>
       </div>
     </form>

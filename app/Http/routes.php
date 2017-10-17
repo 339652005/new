@@ -20,23 +20,24 @@ Route::get('/', function () {
 });
 
 // 测试数据
-// Route::get('seller/test/','Seller\TaocanController@destroy');
+Route::get('test/{id}','Admin\ShopController@shenhe');
+
 
 /*主后台控制路由*/
 // 1.登录 退出 改密码
 Route::get('admin/login','Admin\LoginController@login');
-Route::get('admin/reg','Admin\LoginController@reg');
-Route::post('admin/doreg','Admin\LoginController@doreg');
-// Route::get('reg','LoginController@reg');
 Route::post('admin/dologin','Admin\LoginController@dologin');
 Route::get('admin/yzm','Admin\LoginController@yzm');
 //通过composer安装的验证码
-//Route::get('/code/captcha/{tmp}', 'Admin\LoginController@captcha');   
+//Route::get('/code/captcha/{tmp}', 'Admin\LoginController@captcha');  
+
 // 显示后台首页
 Route::get('admin/index','Admin\LoginController@index');
 Route::get('admin/welcome','Admin\LoginController@welcome');
 // 退出的路由
-Route::get('admin/loginput','Admin\LoginController@loginout');
+Route::get('admin/loginout','Admin\LoginController@loginout');
+Route::get('admin/reg','Admin\LoginController@reg');
+Route::post('admin/doreg','Admin\LoginController@doreg');
 // 修改密码的路由
 Route::get('admin/repass','Admin\LoginController@repass');
 // 2.官方管理员
@@ -48,6 +49,8 @@ Route::resource('admin/seller','Admin\SellerController');
 Route::resource('admin/user','Admin\UserController');
 // 5.店铺管理(dc_shop)
 Route::resource('admin/shop','Admin\ShopController');
+// admin/shenhe/ 审核店铺
+Route::get('admin/shenhe/{id}','Admin\ShopController@shenhe');
 //ajax上传文件(店铺管理)
 Route::post('admin/uploadLogo','Admin\ShopController@uploadLogo');
 Route::post('admin/uploadZhizhao','Admin\ShopController@uploadZhizhao');
@@ -71,18 +74,21 @@ Route::resource('admin/type','Admin\TypeController');
         return view('errors.permission');
     });
 
-
+// 'middleware'=>['isSellerLogin','hasRole']
 
 /*分后台路由(商家的后台)*/  
 // ,'middleware'=>'isLogin'  中间件
-Route::group(['prefix'=>'seller','namespace'=>'Seller'],function (){
+
+Route::get('seller/login','Seller\LoginController@login');
+// 路由组
+Route::group(['prefix'=>'seller','namespace'=>'Seller','middleware'=>['isSellerLogin']],function (){
 // 分控制后台 登录 退出 改密码
-Route::get('login','LoginController@login');
-Route::get('reg','LoginController@reg');
+Route::get('loginout','LoginController@loginout');
 Route::post('dologin','LoginController@dologin');
 Route::get('yzm','LoginController@yzm');
-//通过composer安装的验证码
-//Route::get('/code/captcha/{tmp}', 'Admin\LoginController@captcha');   
+// 注册路由
+Route::get('reg','LoginController@reg');
+Route::post('doreg','LoginController@doreg');
 // 显示后台首页
 Route::get("index",'LoginController@index');
 Route::get('welcome','LoginController@welcome');
@@ -90,23 +96,31 @@ Route::get('welcome','LoginController@welcome');
 Route::get('loginout','LoginController@loginout');
 // 分后台 店主 店铺信息
 Route::get('selfinfo/{id}','LoginController@selfinfo');
+// 执行修改
+Route::post('changeSelfInfo/{id}','LoginController@changeSelfInfo');
+// 店铺信息
 Route::get('shopinfo/{id}','LoginController@shopinfo');
+// 修改信息
+Route::post('changeShopinfo/{id}','LoginController@changeShopinfo');
+// 开店
+Route::get('addShop/{id}','LoginController@addShop');
+// 执行开店
+Route::post('doAddShop','LoginController@doAddShop');
 // 修改密码的路由
 Route::get('repass','LoginController@repass');
-
-// 8.商品管理
+// 8.商品管理 
 Route::resource('foods','FoodsController');
 Route::post('foods/upload','FoodsController@uploadLogo');
 // 矛盾的解决
 Route::post('foods/{id}','FoodsController@update');
 // 9.套餐管理
 Route::resource('taocan','TaocanController');
-// 10.购物车
-Route::resource('cart','CartController');
-// 11.订单
-Route::resource('Order','OrderController');
+// 订单详情
+Route::get('detail', 'OrderController@index');
+Route::get('detail/{id}', 'OrderController@detail');
 
-});
+});   // 结束路由主
+
 
 
 
@@ -148,6 +162,10 @@ Route::get('/home/toorder', 'Home\OrderController@info');
 Route::post('/home/jsy', 'Home\OrderController@jsy');
 Route::get('/home/finish', 'Home\OrderController@finish');
 Route::get('home/ok', 'Home\OrderController@ok');
+
+// 订单详情
+Route::get('home/detail', 'Home\DetailController@detail');
+
 
 /*区域一  登录木块*/
 // 登录  对应视图 view/home/login  样式public/home/css

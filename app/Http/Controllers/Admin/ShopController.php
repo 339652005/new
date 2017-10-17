@@ -23,13 +23,13 @@ class ShopController extends Controller
      */
     public function index(Request $request)
     {
-      // echo "<pre/>";
+      // 店铺类别
         $type =  DB::table('dc_type')->get();
-        // dd( $type);
         foreach ($type as $key => $value) { 
             $arrType[$value->type_id] = $value->type_name;
         }
-        // dd( $arrType);
+     
+       // 搜索
         $input = $request->input('keywords')?$request->input('keywords'):'';
         $shop = Shop::orderBy('shop_id','asc')->where('shop_name','like','%'.$input.'%')->paginate(5);
         return view('admin.shop.list',compact('shop','input','arrType'));
@@ -42,11 +42,8 @@ class ShopController extends Controller
      */
     public function create()
     {
-      // return 'test';
-      $type =  DB::table('dc_type')->get();
-     
-      //dd($type);
-      return view('admin.shop.add',compact('type'));
+
+      return '去掉这个';  //商家添加完跳转添加店铺 
     }
 
     /**
@@ -64,6 +61,7 @@ class ShopController extends Controller
 //        2 执行数据库添加操作（向user表添加一条记录）
 // 第一种添加方式创建一个空模型给模型的属性赋值然后执行save方法）
            $shop = new Shop();
+           $shop->seller_id = $input['tianjia_id'];  //隐藏域
            $shop->shop_name = $input['shop_name'];
            $shop->shop_addr = $input['shop_addr'];
            $shop->shop_x = $input['shop_x'];
@@ -80,13 +78,12 @@ class ShopController extends Controller
 // dd($input);
           if($re){
               // return '成功';
-              return redirect('admin/shop');  //列表页
+              return redirect('admin/seller');  //列表页
           }else{
               // return '失败';
-              return redirect('admin/shop/create')->with('msg','用户添加失败');  //添加页
+              return redirect('admin/shop/create')->with('msg','店铺添加失败');  //添加页
           }
 
-          //补充表单验证
     }
 
     /**
@@ -131,12 +128,13 @@ class ShopController extends Controller
 //        2 找到要修改的用户记录，用提交过来的修改值修改
            $shop = Shop::find($id);
            $shop->shop_name = $input['shop_name'];
+          
            $shop->shop_addr = $input['shop_addr'];
            $shop->shop_x = $input['shop_x'];
            $shop->shop_y = $input['shop_y'];
            $shop->shop_desc = $input['shop_desc'];
            $shop->type_id = $input['shop_type'];
-           $shop->shop_status = $input['shop_status'];
+           // $shop->shop_status = $input['shop_status'];
            // $shop->shop_logo = $input['shop_logo'];
            // $shop->shop_licence = $input['shop_licence'];
            // $shop->shop_zhizhao = $input['shop_zhizhao'];
@@ -164,6 +162,9 @@ class ShopController extends Controller
      */
     public function destroy($id)
     {
+
+      // 删除店铺已取消
+      dd();
         $shop = Shop::find($id);
         //执行删除操作
         $re = $shop->delete();
@@ -217,7 +218,7 @@ class ShopController extends Controller
 
     public function uploadLicence()
     {
-    $file = Input::file('shop_licence');
+     $file = Input::file('shop_licence');
     
       if($file->isValid()){
         $entension = $file->getClientOriginalExtension();//上传文件的后缀名
@@ -229,6 +230,32 @@ class ShopController extends Controller
         return $filepath;
       }
     }
+
+    
+  public function shenhe($id)
+  {
+    // return '审核';
+    // 单店铺 查询到信息
+    $shop = Shop::where('seller_id',$id)->first();
+
+    $shop->shop_status=2;
+    // 写入信息
+    $res = $shop->save();
+
+    //根据返回的结果处理成功和失败
+        if($res){
+          $data=[
+              'status'=>1,
+              'msg'=>'审核成功'
+          ];
+        }else{
+            $data=[
+                'status'=>0,
+                'msg'=>'审核失败'
+            ];
+        }
+        return  $data;  
+  }
     
 
 }
