@@ -14,81 +14,77 @@
 |      =>分模块admin/login_seller
 |
 */
-// 根目录
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 // 测试数据
-Route::get('test/{id}','Admin\ShopController@shenhe');
+// Route::get('test/{id}','Admin\ShopController@shenhe');
 
 
-/*主后台控制路由*/
-// 1.登录 退出 改密码
+// 主后台路由
 Route::get('admin/login','Admin\LoginController@login');
-Route::post('admin/dologin','Admin\LoginController@dologin');
 Route::get('admin/yzm','Admin\LoginController@yzm');
-//通过composer安装的验证码
-//Route::get('/code/captcha/{tmp}', 'Admin\LoginController@captcha');  
-
-// 显示后台首页
-Route::get('admin/index','Admin\LoginController@index');
-Route::get('admin/welcome','Admin\LoginController@welcome');
-// 退出的路由
-Route::get('admin/loginout','Admin\LoginController@loginout');
+Route::post('admin/dologin','Admin\LoginController@dologin');
 Route::get('admin/reg','Admin\LoginController@reg');
 Route::post('admin/doreg','Admin\LoginController@doreg');
+// 主后台路由组
+Route::group(['prefix'=>'admin','namespace'=>'Admin','middleware'=>['isManagerLogin']],function (){
+//通过composer安装的验证码
+//Route::get('/code/captcha/{tmp}', 'Admin\LoginController@captcha');  
+// 显示后台首页
+Route::get('index','LoginController@index');
+Route::get('welcome','LoginController@welcome');
+// 退出的路由
+Route::get('loginout','LoginController@loginout');
 // 修改密码的路由
-Route::get('admin/repass','Admin\LoginController@repass');
+Route::get('repass','LoginController@repass');
 // 2.官方管理员
-Route::resource('admin/manager','Admin\ManagerController');
-// Route::resource('admin/changeStatus/{id}','Admin\ManagerController@changeStatus');
+Route::resource('manager','ManagerController');
 // 3.商家管理
-Route::resource('admin/seller','Admin\SellerController');
+Route::resource('seller','SellerController');
 // 4.用户管理
-Route::resource('admin/user','Admin\UserController');
+Route::resource('user','UserController');
 // 5.店铺管理(dc_shop)
-Route::resource('admin/shop','Admin\ShopController');
+Route::resource('shop','ShopController');
 // admin/shenhe/ 审核店铺
-Route::get('admin/shenhe/{id}','Admin\ShopController@shenhe');
+Route::get('shenhe/{id}','ShopController@shenhe');
 //ajax上传文件(店铺管理)
-Route::post('admin/uploadLogo','Admin\ShopController@uploadLogo');
-Route::post('admin/uploadZhizhao','Admin\ShopController@uploadZhizhao');
-Route::post('admin/uploadLicence','Admin\ShopController@uploadLicence');
+Route::post('uploadLogo','ShopController@uploadLogo');
+Route::post('uploadZhizhao','ShopController@uploadZhizhao');
+Route::post('uploadLicence','ShopController@uploadLicence');
 // 修改edit与上传图片upload矛盾的解决
-Route::post('admin/shop/{id}','Admin\ShopController@update');
+Route::post('shop/{id}','ShopController@update');
 // 6.店铺分类( dc_type火锅 早餐 糕点)
-Route::resource('admin/type','Admin\TypeController');
-// 7.权限管理
+Route::resource('type','TypeController');
+    // 7.权限管理
     //  7-1角色路由
-    Route::resource('admin/role','admin\RoleController');
-    Route::get('admin/role/auth/{id}','admin\RoleController@auth');
-    Route::post('admin/role/doauth','admin\RoleController@doAuth');
+    Route::resource('role','RoleController');
+    Route::get('role/auth/{id}','RoleController@auth');
+    Route::post('role/doauth','RoleController@doAuth');
     //  7-2权限路由
-    Route::resource('admin/permission','admin\PermissionController');
+    Route::resource('permission','PermissionController');
        // 用户页面的 授权按钮 路由
-    Route::get('admin/user/auth/{id}','admin\UserController@auth');
-    Route::post('admin/user/doauth','admin\UserController@doAuth');
+    Route::get('user/auth/{id}','UserController@auth');
+    Route::post('user/doauth','UserController@doAuth');
     //如果没有权限，给一个没有权限的提示页面
-    Route::get('admin/nopermission',function(){
+    Route::get('nopermission',function(){
         return view('errors.permission');
     });
+});   
 
-// 'middleware'=>['isSellerLogin','hasRole']
+
+
+
 
 /*分后台路由(商家的后台)*/  
-// ,'middleware'=>'isLogin'  中间件
-
 Route::get('seller/login','Seller\LoginController@login');
-// 路由组
+Route::post('seller/dologin','Seller\LoginController@dologin');
+Route::get('seller/yzm','Seller\LoginController@yzm');
+Route::get('seller/reg','Seller\LoginController@reg');
+Route::post('seller/doreg','Seller\LoginController@doreg');
+/*分后台路由组*/
 Route::group(['prefix'=>'seller','namespace'=>'Seller','middleware'=>['isSellerLogin']],function (){
 // 分控制后台 登录 退出 改密码
 Route::get('loginout','LoginController@loginout');
-Route::post('dologin','LoginController@dologin');
-Route::get('yzm','LoginController@yzm');
-// 注册路由
-Route::get('reg','LoginController@reg');
-Route::post('doreg','LoginController@doreg');
 // 显示后台首页
 Route::get("index",'LoginController@index');
 Route::get('welcome','LoginController@welcome');
@@ -118,20 +114,14 @@ Route::resource('taocan','TaocanController');
 // 订单详情
 Route::get('detail', 'OrderController@index');
 Route::get('detail/{id}', 'OrderController@detail');
-
 });   // 结束路由主
 
 
-
-
-
-
-
+// isUserLogin
 
 
 /* 前台的控制器 */
-Route::get('/','Home\IndexController@index');
-// ,'middleware'=>'isLogin'  中间件
+//  路由组1
 Route::group(['prefix'=>'home','namespace'=>'Home'],function (){
 // 1.显示前台首页
 Route::resource('index','IndexController');
@@ -139,47 +129,45 @@ Route::resource('index','IndexController');
 Route::get('show/{taocan_id}/{shop_id}','IndexController@taocanFoods');
 // 3.首页不同类别下的商品
 Route::get('index/type/{type_id}','IndexController@typeFoods');
-// 4.购物车资源理由
-// Route::resource('cart','ShopController');
-});
-//模块二 购物车相关路由  start
-// Route::resource('/home/shop', 'Home\ShopController');
-//Route::controller('shop', 'Home\ShopController');
 // 1.加入购物车
-Route::get('/home/addcart/{id}', 'Home\ShopController@addcart');
-// 2.数据处理 addcart跳转过来  =>引入product.cart
-Route::get('/cart', 'Home\ShopController@cart')->name('cart');
+Route::get('/addcart/{id}', 'ShopController@addcart');
 // 3.移除数据
-Route::get('/home/removecart/{id}', 'Home\ShopController@getRemovecart');
+Route::get('removecart/{id}', 'ShopController@getRemovecart');
 // 4.清空数据
-Route::get('/home/del', 'Home\ShopController@destroy');
+Route::get('del', 'ShopController@destroy');
 // 返回首页 
-Route::get('/home/prev', 'Home\IndexController@index');
+Route::get('prev', 'IndexController@index');
 
-// 购物车提交到订单 (判断登录)
-Route::get('/home/toorder', 'Home\OrderController@info');
+});
+
+//  路由组2 权限
+Route::group(['prefix'=>'home','namespace'=>'Home','middleware'=>['isUserLogin']],function (){
+// Route::group(['prefix'=>'home','namespace'=>'Home'],function (){
+    // 购物车提交到订单 (判断登录)
+Route::get('toorder', 'OrderController@info');
 // 收货地址
-Route::post('/home/jsy', 'Home\OrderController@jsy');
-Route::get('/home/finish', 'Home\OrderController@finish');
-Route::get('home/ok', 'Home\OrderController@ok');
-
+Route::post('jsy', 'OrderController@jsy');
+Route::get('finish', 'OrderController@finish');
+Route::get('ok', 'OrderController@ok');
 // 订单详情
-Route::get('home/detail', 'Home\DetailController@detail');
+Route::get('detail', 'DetailController@detail');
+// 退出
+Route::get('loginout', 'LoginController@loginout');
+//改密
+Route::get('reg', 'LoginController@reg');
+Route::get('repass', 'LoginController@repass');
+// 个人中心
+Route::get('userinfo', 'InfoController@userinfo');
+Route::post('changeUserInfo', 'InfoController@changeUserInfo');
 
-
-/*区域一  登录木块*/
-// 登录  对应视图 view/home/login  样式public/home/css
-// 引入登录界面
+ });  
+// 登录
 Route::get('home/login', 'Home\LoginController@login');
 Route::post('home/dologin', 'Home\LoginController@dologin');
-// 注册 
 
-//修改密码
-/* 区域二 个人中心 */
-// 对应视图 view/home/user  样式public/home/css
-// 用户信息的显示(修改界面显示)
-
-/* 区域二 静态页面 */
-// 底部友情链接 + 手机版 a 链接 get方式普通路由 如/home/app
-
-// 说明:命名空间/home/功能木块/参数
+// 注册
+Route::post('home/dorepass', 'Home\LoginController@dorepass');
+Route::post('home/doreg', 'Home\LoginController@doreg');
+// 2.数据处理 addcart跳转过来  =>引入product.cart
+Route::get('/cart', 'Home\ShopController@cart')->name('cart'); 
+ Route::get('/','Home\IndexController@index');

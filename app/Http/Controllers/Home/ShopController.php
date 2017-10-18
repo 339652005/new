@@ -36,7 +36,7 @@ class ShopController extends Controller
 
     public function cart()
     {
-        // dd(11);
+        // dd( $request->session()->all());
         //购物车所有信息
         $carts = Cart::content();
         //总额 不含税

@@ -14,42 +14,14 @@ class OrderController extends Controller
     // 收集订单信息   收货人, 电话, 地址 ,留言
     public  function info(Request $request)
     {
-        // 购物车信息判断
-        // dd($request->session()->all());
-        if (!$request->session()->has('cart')) { 
-            // 无商品返回首页/做个弹层
-            echo "无商品返回首页/做个弹层";
-            return redirect('/home/index');
-        } 
-
-// 假数据
-$request->session()->put('userLoginFlag','true');
-$request->session()->put('user_id','70');  //登录用户id 伪造
-
-        // 判断用户登录标志位
-        if (!$request->session()->has('userLoginFlag')) {
-            echo "没有登录";
-            $request->session()->put('back','jsy');
-            // 用户登录界面
-            // return view('home.login.list');
-            return redirect('home/login');
-        }
-        
-            // 第三种状态 成功跳转
-            return view('home.order.info');
-        }
+        return view('home.order.info');
+    }
         
         // 结算页
        public function jsy(Request $request)
         {
-            // dd(111);
-            //处理session销毁过后,用户再刷新 
-            // if (!$request->session()->has('order_id')) {
-            //     // 回首页
-            //     return redirect('/home/index');
-            // }
             $input = $request->except('_token');
-           $order = new Order();
+            $order = new Order();
            
 
         //购物车所有信息 的获取
@@ -62,17 +34,7 @@ $request->session()->put('user_id','70');  //登录用户id 伪造
       
       
         
-       // echo "<pre/>";
-       foreach ($carts as $key => $cart) {
-            # code...
-             //dd($cart->options->piture);
-             // print_r($cart->name); 
-             // print_r($cart->id); 
-             // print_r($cart->price); 
-             // echo "<br/>";
-             // print_r($cart->options->shop); // shop对象
-             // print_r($seller->id); 
-       }
+       
         
         // 暂时存入session
            $request->session()->put('order_name',$input['order_name']);
@@ -92,22 +54,18 @@ $request->session()->put('user_id','70');  //登录用户id 伪造
         // 最终结账
         public  function finish(Request $request)
         {
-           
-
             // 开启事务
             DB::beginTransaction();
             //** 先主表生成订单号 详情表才能用这个订单号
-
             //  改库存方法   写主表方法    写详情表方法
-            if($this->updateStock() && $this->writeOrder($request)  && $this->writeDetail() ){  
+            if($this->updateStock() && $this->writeOrder($request)  && $this->writeDetail() ){ 
+            // dd(11); 
                 DB::commit();
             }else{
                 DB::rollBack();
                 // 失败回首页
                 return redirect('/home/index');
            }                  
-            // 善后last() 
-            // $this -> last();
                 return redirect('/home/ok');
         }
 
@@ -122,6 +80,7 @@ $request->session()->put('user_id','70');  //登录用户id 伪造
                    die();         
                 } 
             }   
+
             return true;    // 修改销量
         }
         
@@ -157,7 +116,7 @@ $request->session()->put('user_id','70');  //登录用户id 伪造
             $data['order_name'] = $request->session()->get('order_name');  //收货人
             $data['order_total'] = $request->session()->get('order_total');  
             $data['order_count'] = $request->session()->get('order_count');  
-            $data['user_id'] = session('user_id');  //登录用户
+            $data['user_id'] = session('user_id')[0];  //登录用户
             $data['order_time'] = time();  
             //食品id 暂时获取不到 oeder_id关联
  
@@ -165,13 +124,15 @@ $request->session()->put('user_id','70');  //登录用户id 伪造
              echo session('order_id').'<br/>';         
              echo $this -> oid;         
              echo $data['order_id'];  */      
-            
+            // dd($data);
             $res = DB::table('dc_orders') -> insert($data);
+             // dd(11);
             if ($res){
                 // echo "成功";
                 return true;  // 写主表成功
             } else {
                 // echo "失败";
+
                 return false; // 写主表失败
             }
         }
@@ -227,10 +188,7 @@ $request->session()->put('user_id','70');  //登录用户id 伪造
             $request->session()->forget('order_total');
             $request->session()->forget('order_count');
             $request->session()->forget('order_id');
-               
-            // "userLoginFlag" => "true"    用户是否登录
-            // "user_id" => "70"            当前登录用户识别
-
+  // $request->session()->forget('user_id');
             return view('home.order.ok',compact('request'));
         }
 
